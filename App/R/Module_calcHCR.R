@@ -1,0 +1,10 @@
+calcHCR <- function(){
+
+
+
+
+
+
+
+
+}
