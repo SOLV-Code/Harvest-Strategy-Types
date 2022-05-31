@@ -38,9 +38,9 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
 	 #  	    inputId = "plot.lim",label = "Plot Range",value = 300,decimalPlaces = 0, digitGroupSeparator = ","),
 	  numericInput("plot.lim", "Plot Range",  value = 300 ,   width = "100%"),
 	  numericInput("run.med", "Run - Median",  value = 100 ,   width = "100%"),
-	  numericInput("run.lower", "Run - Lower",  value = 70 ,   width = "100%"),
-	  numericInput("run.upper", "Run - Upper",  value = 150 ,   width = "100%"),
-	  numericInput("min.er", "MinER",  value = 0 ,  min = 0, max = 100, step = 1, width = "100%"),
+	  numericInput("run.lower", "Run - Lower (Deduct %)",  value = 15,  min =0,max=100, width = "100%"),
+	  numericInput("run.upper", "Run - Upper (Add %)",  value = 30 , min= 0, max = 300,  width = "100%"),
+	  #numericInput("min.er", "MinER",  value = 0 ,  min = 0, max = 100, step = 1, width = "100%"),
 	  selectizeInput("rate.type", "Rate Type", choices = c("ER","TotalMort"),selected = "ER"),
 	  textInput("units.use","Unit Label",value ="(1000s of Fish)"),
 	  textInput("run.label","Run Label",value ="In-season Run Estimate"),
@@ -59,12 +59,31 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
         tabPanel("Fixed Spn", value = "FixedSpn", plotOutput("plot2",width = "100%", height = "600px"),
                  numericInput("fixed.spn", "Fixed Spawner Target",  value = 50 ,width = "20%")),
         tabPanel("Fixed Ct", value = "FixedCt", plotOutput("plot3",width = "100%", height = "600px"),
-                          numericInput("fixed.ct", "Fixed Catch Target",  value = 50 ,width = "20%")
-        )
-        )
-
-
-
+                 numericInput("fixed.ct", "Fixed Catch Target",  value = 50 ,width = "20%")),
+        tabPanel("Step", value = "Step",
+                 fluidRow(column(12,plotOutput("plot4",width = "100%", height = "600px"))),
+                 fluidRow(column(2,numericInput("step1.rp", "Step 1 Ref Pt",  value = 20 ,width = "100%")),
+                          column(2,numericInput("step1.rate", "Step 1 Rate",  value = 30 ,width = "100%")),
+                          column(2,numericInput("step2.rp", "Step 2 Ref Pt",  value = 50 ,width = "100%")),
+                          column(2,numericInput("step2.rate", "Step 2 Rate",  value = 50 ,width = "100%")),
+                          column(2,numericInput("step3.rp", "Step 3 Ref Pt",  value = 170 ,width = "100%")),
+                          column(2,numericInput("step3.rate", "Step 3 Rate",  value = 70 ,width = "100%"))
+                )# end fluid row
+        ), # end tabpanel
+        tabPanel("Ice Hockey Stick", value = "IceHockeyStick",
+                 fluidRow(column(12,plotOutput("plot5",width = "100%", height = "600px"))),
+                 fluidRow(column(3,numericInput("ice.rp1", "Lower Ref Pt",  value = 20 ,width = "100%")),
+                          column(3,numericInput("ice.rp2", "Upper Ref Pt",  value = 50 ,width = "100%")),
+                          column(3,numericInput("ice.rate", "Cap on Rate",  value = 50 ,width = "100%"))
+                 )# end fluid row
+        ), # end tabpanel
+        tabPanel("Field Hockey Stick", value = "FieldHockeyStick",
+                 fluidRow(column(12,plotOutput("plot6",width = "100%", height = "600px"))),
+                 fluidRow(column(3,numericInput("field.rp1", "Cut Back Pt",  value = 20 ,width = "100%")),
+                          column(3,numericInput("field.rate", "Cap on Rate",  value = 50 ,width = "100%"))
+                 )# end fluid row
+        ) # end tabpanel
+		 ) # end tabset panel
 
 
 		) # end main panel
