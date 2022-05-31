@@ -139,21 +139,21 @@ library("shinyWidgets")
 
 	  if(input$display.tab == "FieldHockeyStick"){
 
+      hcr.out <- data.frame(Run = run.vec ,ER = NA)
 
-	    above.cutback.idx <- run.vec >= input$field.rp1
-	    fixed.spn.idx <-  run.vec * (1-input$field.rate/100) >= input$field.rp1
+      # calc abd above spn target
+      abd.above.spn <- 	 hcr.out$Run  - input$field.rp1
+      abd.above.spn[abd.above.spn<0] <- 0
 
-	    hcr.out <- data.frame(Run = run.vec ,ER = NA)
+      # calc potential rate (bounded by cap)
+      hcr.out$ER <- round(abd.above.spn/hcr.out$Run,5)*100
+      hcr.out$ER <- pmin(hcr.out$ER,input$field.rate)
 
-	    hcr.out$ER[above.cutback.idx] <- input$field.rate
-	    hcr.out$Spn[above.cutback.idx]  <- hcr.out$Run[above.cutback.idx]   * (1-hcr.out$ER[above.cutback.idx]  /100)
-	    hcr.out$Ct[above.cutback.idx]  <- hcr.out$Run[above.cutback.idx]   * hcr.out$ER[above.cutback.idx]  /100
 
-	    hcr.out$Spn[fixed.spn.idx] <- input$field.rp1
-	    #hcr.out$Spn[!fixed.spn.idx & !above.cutback.idx] <- hcr.out$Run[!fixed.spn.idx & !above.cutback.idx]
+	    hcr.out$Spn  <- hcr.out$Run  * (1-hcr.out$ER/100)
+	    hcr.out$Ct <- hcr.out$Run  * (hcr.out$ER/100)
 
-	    hcr.out$Ct[fixed.spn.idx] <- hcr.out$Run[fixed.spn.idx] - hcr.out$Spn[fixed.spn.idx]
-	    hcr.out$ER[fixed.spn.idx] <- round(hcr.out$Ct[fixed.spn.idx] / hcr.out$Run[fixed.spn.idx]*100)
+
 	    print(hcr.out)
 
 	  }
@@ -194,23 +194,20 @@ library("shinyWidgets")
        if(input$plot.type == "Spawners"){
         y.label <- paste("Spawner Target",input$units.use)
         plot(hcr.in$Run,hcr.in$Spn,type="l",bty="n",axes=FALSE,lwd = 5,col="darkblue",
-             xlab = paste(input$run.label,input$units.use), ylab =y.label,
+             xlab = paste(input$run.label,input$units.use), ylab =y.label, ylim = c(0,input$plot.lim),
              cex.lab= 1.5,col.lab="darkblue")
         	}
 
         if(input$plot.type == "Catch"){
           y.label <- paste("Catch Target",input$units.use)
           plot(hcr.in$Run,hcr.in$Ct,type="l",bty="n",axes=FALSE,lwd = 5,col="darkblue",
-               xlab = paste(input$run.label,input$units.use), ylab =y.label,
+               xlab = paste(input$run.label,input$units.use), ylab =y.label, ylim = c(0,input$plot.lim),
                cex.lab= 1.5,col.lab="darkblue")
         }
 
 
         axis(1, cex.axis=1.5,col.axis = "darkblue")
         axis(2, cex.axis=1.5,col.axis = "darkblue",las=2)
-
-
-
 
 
 

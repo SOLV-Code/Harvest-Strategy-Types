@@ -36,7 +36,7 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
 	  selectizeInput("plot.type", "Display Type", choices = c("Rate","Spawners","Catch","Table"), selected="Rate"),
 	  #shinyWidgets::autonumericInput(
 	 #  	    inputId = "plot.lim",label = "Plot Range",value = 300,decimalPlaces = 0, digitGroupSeparator = ","),
-	  numericInput("plot.lim", "Plot Range",  value = 300 ,   width = "100%"),
+	  numericInput("plot.lim", "Plot Range",  value = 200 ,   width = "100%"),
 	  numericInput("run.med", "Run - Median",  value = 100 ,   width = "100%"),
 	  numericInput("run.lower", "Run - Lower (Deduct %)",  value = 15,  min =0,max=100, width = "100%"),
 	  numericInput("run.upper", "Run - Upper (Add %)",  value = 30 , min= 0, max = 300,  width = "100%"),
@@ -79,8 +79,8 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
         ), # end tabpanel
         tabPanel("Field Hockey Stick", value = "FieldHockeyStick",
                  fluidRow(column(12,plotOutput("plot6",width = "100%", height = "600px"))),
-                 fluidRow(column(3,numericInput("field.rp1", "Cut Back Pt",  value = 20 ,width = "100%")),
-                          column(3,numericInput("field.rate", "Cap on Rate",  value = 50 ,width = "100%"))
+                 fluidRow(column(3,numericInput("field.rp1", "Spn Target",  value = 50 ,width = "100%")),
+                          column(3,numericInput("field.rate", "Cap on Rate",  value = 65 ,width = "100%"))
                  )# end fluid row
         ) # end tabpanel
 		 ) # end tabset panel
