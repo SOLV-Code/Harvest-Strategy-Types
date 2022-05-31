@@ -1,4 +1,13 @@
+### Version
+
+Version 0.1: 2022-05-30
+
 ### Citation
 
-G. Pestal, C. Carr-Harris, and A.-M. Huang. An interactive tool for exploring alternative harvest rule types. etc etc
+G. Pestal, A.-M. Huang, and C. Carr-Harris. An interactive tool for exploring alternative harvest rule types. etc etc
 
+
+### Notes
+
+
+Text
