@@ -5,7 +5,7 @@ account: solv-code
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 6406245
-bundleId: 5965156
+bundleId: 5968465
 url: https://solv-code.shinyapps.io/harveststrategytypes/
-when: 1654028800.74305
-lastSyncTime: 1654028800.74305
+when: 1654102204.96895
+lastSyncTime: 1654102204.96895
