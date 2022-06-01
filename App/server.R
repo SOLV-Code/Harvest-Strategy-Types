@@ -29,7 +29,7 @@ library("tidyr")
 library("tibble")
 library("readr")
 library("shinyWidgets")
-
+library("gridExtra")
 
 
 
@@ -45,11 +45,11 @@ library("shinyWidgets")
 	hcr.calc <- reactive({
 
 
-	  run.vec <- sort(c(seq(0,input$plot.lim,length.out = 97),
-	                    input$run.med,
+	  run.vec <- c(input$run.med,
 	                    max(c(0,input$run.med * (1 - input$run.lower/100))) ,
-	                    input$run.med * (1 + input$run.upper/100)
-	                   ))
+	                    input$run.med * (1 + input$run.upper/100),
+	                    seq(0,input$plot.lim,length.out = 97)
+	                   )
 
 
 
@@ -132,7 +132,7 @@ library("shinyWidgets")
 	    hcr.out$Spn <- hcr.out$Run * (1-hcr.out$ER/100)
 	    hcr.out$Ct <- hcr.out$Run * hcr.out$ER/100
 
-	    print(hcr.out)
+	    #print(hcr.out)
 
 	  }
 
@@ -154,10 +154,12 @@ library("shinyWidgets")
 	    hcr.out$Ct <- hcr.out$Run  * (hcr.out$ER/100)
 
 
-	    print(hcr.out)
+	    #print(hcr.out)
 
 	  }
 
+
+     hcr.out <- hcr.out %>% select(Run,ER,Spn,Ct)
 
 			return(hcr.out)
 
@@ -166,12 +168,12 @@ library("shinyWidgets")
 
 
 
-	 output$table.hcr<- DT::renderDataTable(
-	 				DT::datatable(hcr.calc(), extensions = 'Buttons',
-	 											options = list(paging = FALSE ,
-	 																		 dom = 'Bfrtip',	buttons =  list(
-	 																		 	list(extend = 'csv', filename = "HCR_Summary"))))
-					)
+	# output$table.hcr<- DT::renderDataTable(
+	# 				DT::datatable(hcr.calc(), extensions = 'Buttons',
+	# 											options = list(paging = FALSE ,
+	# 																		 dom = 'Bfrtip',	buttons =  list(
+	# 																		 	list(extend = 'csv', filename = "HCR_Summary"))))
+	#				)
 
 
 
@@ -182,6 +184,12 @@ library("shinyWidgets")
 
 				hcr.in <- hcr.calc()
         #print(hcr.in)
+
+	if(input$plot.type != "Table"){
+
+
+	  hcr.in <- hcr.in %>% arrange(Run)
+
 
         if(input$plot.type == "Rate"){
               y.label <- paste(input$rate.type,"(%)")
@@ -216,6 +224,25 @@ library("shinyWidgets")
         abline(v = input$run.med * (1 + input$run.upper/100) ,col = "red", lwd=3,lty=2)
 
         title(main = input$plot.type,col.main="darkblue",font.main=2,cex.main=2)
+
+        } # end if plot
+
+
+				if(input$plot.type == "Table"){
+
+
+				  table.in <- hcr.in[1:3,] %>% as.data.frame() %>% arrange(Run) %>% round()
+				  table.in <- t(table.in) %>% as.data.frame()
+				  names(table.in) <- c("Lower","Mid","Upper")
+				  print(table.in)
+
+
+				  tt <- ttheme_default(base_size=34)
+
+				  grid.table( table.in,theme = tt)
+
+
+				}
 
 					})
 
