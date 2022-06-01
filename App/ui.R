@@ -106,7 +106,7 @@ fluidPage(
   titlePanel("About this app"),
 
   fluidRow(
-    column(8,
+    column(10,
       includeMarkdown("Markdown/about.md")
     )
   )
