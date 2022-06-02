@@ -188,6 +188,9 @@ library("gridExtra")
 	if(input$plot.type != "Table"){
 
 
+	  plot.sub <-  hcr.in[1:3,] %>% as.data.frame()
+
+
 	  hcr.in <- hcr.in %>% arrange(Run)
 
 
@@ -219,9 +222,23 @@ library("gridExtra")
 
 
 
-        abline(v = input$run.med,col = "red", lwd=3)
-        abline(v = max(c(0,input$run.med * (1 - input$run.lower/100))) ,col = "red", lwd=3,lty=2)
-        abline(v = input$run.med * (1 + input$run.upper/100) ,col = "red", lwd=3,lty=2)
+        #abline(v = input$run.med,col = "red", lwd=3)
+        #abline(v = max(c(0,input$run.med * (1 - input$run.lower/100))) ,col = "red", lwd=3,lty=2)
+        #abline(v = input$run.med * (1 + input$run.upper/100) ,col = "red", lwd=3,lty=2)
+
+        abline(v = plot.sub$Run[1],col = "red", lwd=3)
+        abline(v = plot.sub$Run[2] ,col = "red", lwd=3,lty=2)
+        abline(v = plot.sub$Run[3] ,col = "red", lwd=3,lty=2)
+
+
+        if(input$plot.type == "Rate"){var.pt <- "ER"}
+        if(input$plot.type == "Spawners"){var.pt <- "Spn"}
+        if(input$plot.type == "Catch"){var.pt <- "Ct"}
+
+
+        points(plot.sub$Run[1],plot.sub[1,var.pt],pch=21,col="red",cex=2,lwd=3,bg="firebrick1")
+        points(plot.sub$Run[2],plot.sub[2,var.pt],pch=21,col="red",cex=2,lwd=3,bg="white")
+        points(plot.sub$Run[3],plot.sub[3,var.pt],pch=21,col="red",cex=2,lwd=3,bg="white")
 
         title(main = input$plot.type,col.main="darkblue",font.main=2,cex.main=2)
 
