@@ -25,6 +25,20 @@ library("gridExtra")
 
 navbarPage("Harvest Strategy Types", id = "MainTab",
 
+           tabPanel("About",
+
+                    fluidPage(
+
+                      titlePanel("App to Explore Salmon Harvest Strategy Types"),
+
+                      fluidRow(
+                        column(7,
+                               includeMarkdown("Markdown/about.md")
+                        )
+                      )
+                    )
+           ),  # end about tab panel
+
 
     tabPanel("Explore HCR Types", value= "Explore",
 
@@ -92,26 +106,14 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
 
 
 
-	),
+	)
 
 
 
 
 
 
-	tabPanel("About",
 
-fluidPage(
-
-  titlePanel("About this app"),
-
-  fluidRow(
-    column(10,
-      includeMarkdown("Markdown/about.md")
-    )
-  )
-)
-	  )  # end about tab panel
 
 
 
