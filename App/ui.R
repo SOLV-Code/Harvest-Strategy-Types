@@ -67,12 +67,12 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
 
 
 		 tabsetPanel(type = "tabs", id = "display.tab",
-        tabPanel("Fixed Rate", value = "FixedRate", plotOutput("plot1",width = "100%", height = "600px"),
+        tabPanel("Fixed Rate Target", value = "FixedRate", plotOutput("plot1",width = "100%", height = "600px"),
                  numericInput("fixed.rate", "Fixed Rate Target",  value = 50 , min = 0 , max = 100, step = 1,  width = "20%")
                  ),
-        tabPanel("Fixed Spn", value = "FixedSpn", plotOutput("plot2",width = "100%", height = "600px"),
+        tabPanel("Fixed Spawner Target", value = "FixedSpn", plotOutput("plot2",width = "100%", height = "600px"),
                  numericInput("fixed.spn", "Fixed Spawner Target",  value = 50 ,width = "20%")),
-        tabPanel("Fixed Ct", value = "FixedCt", plotOutput("plot3",width = "100%", height = "600px"),
+        tabPanel("Fixed Catch Target", value = "FixedCt", plotOutput("plot3",width = "100%", height = "600px"),
                  numericInput("fixed.ct", "Fixed Catch Target",  value = 50 ,width = "20%")),
         tabPanel("Step", value = "Step",
                  fluidRow(column(12,plotOutput("plot4",width = "100%", height = "600px"))),

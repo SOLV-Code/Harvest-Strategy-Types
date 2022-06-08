@@ -222,13 +222,17 @@ library("gridExtra")
 
 
 
-        #abline(v = input$run.med,col = "red", lwd=3)
-        #abline(v = max(c(0,input$run.med * (1 - input$run.lower/100))) ,col = "red", lwd=3,lty=2)
-        #abline(v = input$run.med * (1 + input$run.upper/100) ,col = "red", lwd=3,lty=2)
+        # shaded area version
+        #rect.col <- alpha("firebrick1", 0.2)
+        #rect(plot.sub$Run[2],par("usr")[3],plot.sub$Run[3],par("usr")[4],col=rect.col ,border = rect.col )
 
+        # 3 lines version
         abline(v = plot.sub$Run[1],col = "red", lwd=3)
         abline(v = plot.sub$Run[2] ,col = "red", lwd=3,lty=2)
         abline(v = plot.sub$Run[3] ,col = "red", lwd=3,lty=2)
+
+
+
 
 
         if(input$plot.type == "Rate"){var.pt <- "ER"}
@@ -236,6 +240,22 @@ library("gridExtra")
         if(input$plot.type == "Catch"){var.pt <- "Ct"}
 
 
+
+
+        # ref lines
+        segments(par("usr")[1],plot.sub[1,var.pt],plot.sub$Run[1],plot.sub[1,var.pt],col="red",lwd=2)
+        segments(par("usr")[1],plot.sub[2,var.pt],plot.sub$Run[2],plot.sub[2,var.pt],col="red",lwd=2,lty=2)
+        segments(par("usr")[1],plot.sub[3,var.pt],plot.sub$Run[3],plot.sub[3,var.pt],col="red",lwd=2, lty=2)
+
+
+
+
+       if(input$plot.type == "Rate"){lines(hcr.in$Run,hcr.in$ER,type="l",bty="n",lwd = 5,col="darkblue")  }
+        if(input$plot.type == "Spawners"){lines(hcr.in$Run,hcr.in$Spn,type="l",bty="n",lwd = 5,col="darkblue") }
+        if(input$plot.type == "Catch"){lines(hcr.in$Run,hcr.in$Ct,type="l",bty="n",lwd = 5,col="darkblue")}
+
+
+        # ref points
         points(plot.sub$Run[1],plot.sub[1,var.pt],pch=21,col="red",cex=2,lwd=3,bg="firebrick1")
         points(plot.sub$Run[2],plot.sub[2,var.pt],pch=21,col="red",cex=2,lwd=3,bg="white")
         points(plot.sub$Run[3],plot.sub[3,var.pt],pch=21,col="red",cex=2,lwd=3,bg="white")
