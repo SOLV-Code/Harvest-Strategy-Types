@@ -20,3 +20,17 @@ Supporting information  is being compiled in the [wiki pages](https://github.com
 The app displays different types of harvest strategy, and shows the implied targets at different levels of abundance. For example, if a stock is managed to a fixed exploitatiom rate target of 50%, what are the *implied* spawner and catch targets.
 
 Users can change the specifications for each type of harvest rule (e.g. set the fixed exploitation rate, or set the steps for a stepped ER rule) and vary the abundance estimate (e.g. median and lower/upper bounds on in-season run size estimate).
+
+
+### Planned Features
+
+The following additional features are planned:
+
+
+
+You can follow progress at [this thread](https://github.com/SOLV-Code/Harvest-Strategy-Types/issues/3).
+
+
+You can add feature requests at [this thread](https://github.com/SOLV-Code/Harvest-Strategy-Types/issues/11).
+
+
