@@ -26,6 +26,10 @@ Users can change the specifications for each type of harvest rule (e.g. set the 
 
 The following additional features are planned:
 
+* option for "minimum ER" when Rate = "Total Allowable Mort"
+* option for including in-river mortality
+* Fraser Pink- style harvest rule
+* option to display boxplot of historic run sizes
 
 
 You can follow progress at [this thread](https://github.com/SOLV-Code/Harvest-Strategy-Types/issues/3).
