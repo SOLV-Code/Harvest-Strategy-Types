@@ -1,6 +1,6 @@
 ### Version
 
-Version 0.2: 2022-06-01
+Version 0.3: 2022-06-16
 
 ### Citation
 
