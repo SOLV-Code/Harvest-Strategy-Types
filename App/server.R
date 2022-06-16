@@ -70,8 +70,32 @@ library("gridExtra")
 	    hcr.out$Ct <- hcr.out$Run - hcr.out$Spn
 	    hcr.out$Ct[hcr.out$Ct<0] <- 0
 	    hcr.out$ER <- round(hcr.out$Ct /  hcr.out$Run *100)
-
+	    hcr.out$ER[is.na(hcr.out$ER)] <- 0
 	    #print(hcr.out)
+
+	  }
+
+
+	  if(input$display.tab == "StepSpn"){
+
+
+
+	    hcr.out <- data.frame(Run = run.vec ,Spn = run.vec)
+
+      print(input$step1spn.rp)
+	    below1.idx <- hcr.out$Run <= input$stepspn1.rp
+	    step1.idx <- hcr.out$Run > input$stepspn1.rp & hcr.out$Run <= input$stepspn2.rp
+	    step2.idx <- hcr.out$Run > input$stepspn2.rp
+
+	    hcr.out$Spn[below1.idx] <- hcr.out$Run[below1.idx] # below lower RP: all Run goes to Spn
+	    hcr.out$Spn[step1.idx] <- input$stepspn1.target # above lower RP but below upper RP: harvest all above target 1
+	    hcr.out$Spn[step2.idx] <- input$stepspn2.target # above lower target: harvest all above target 1
+
+	    hcr.out$Ct <- hcr.out$Run - hcr.out$Spn
+	    hcr.out$Ct[hcr.out$Ct<0] <- 0
+	    hcr.out$ER <- round(hcr.out$Ct /  hcr.out$Run *100)
+	    hcr.out$ER[is.na(hcr.out$ER)] <- 0
+	    print(hcr.out)
 
 	  }
 
@@ -180,7 +204,7 @@ library("gridExtra")
 	 # to show same plot on diff panels, need to create copies
 	 #https://stackoverflow.com/a/44242503
 
-	 output$plot6 <- output$plot5 <- output$plot4 <- output$plot3 <- output$plot2 <- output$plot1 <- renderPlot({
+	output$plot7 <-  output$plot6 <- output$plot5 <- output$plot4 <- output$plot3 <- output$plot2 <- output$plot1 <- renderPlot({
 
 				hcr.in <- hcr.calc()
         #print(hcr.in)

@@ -67,14 +67,14 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
 
 
 		 tabsetPanel(type = "tabs", id = "display.tab",
-        tabPanel("Fixed Rate Target", value = "FixedRate", plotOutput("plot1",width = "100%", height = "600px"),
+        tabPanel("Fixed Rate", value = "FixedRate", plotOutput("plot1",width = "100%", height = "600px"),
                  numericInput("fixed.rate", "Fixed Rate Target",  value = 50 , min = 0 , max = 100, step = 1,  width = "20%")
                  ),
-        tabPanel("Fixed Spawner Target", value = "FixedSpn", plotOutput("plot2",width = "100%", height = "600px"),
+        tabPanel("Fixed Spawners", value = "FixedSpn", plotOutput("plot2",width = "100%", height = "600px"),
                  numericInput("fixed.spn", "Fixed Spawner Target",  value = 50 ,width = "20%")),
-        tabPanel("Fixed Catch Target", value = "FixedCt", plotOutput("plot3",width = "100%", height = "600px"),
+        tabPanel("Fixed Catch", value = "FixedCt", plotOutput("plot3",width = "100%", height = "600px"),
                  numericInput("fixed.ct", "Fixed Catch Target",  value = 50 ,width = "20%")),
-        tabPanel("Step", value = "Step",
+        tabPanel("Stepped ER", value = "Step",
                  fluidRow(column(12,plotOutput("plot4",width = "100%", height = "600px"))),
                  fluidRow(column(2,numericInput("step1.rp", "Step 1 Ref Pt",  value = 20 ,width = "100%")),
                           column(2,numericInput("step1.rate", "Step 1 Rate",  value = 30 ,width = "100%")),
@@ -83,6 +83,14 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
                           column(2,numericInput("step3.rp", "Step 3 Ref Pt",  value = 170 ,width = "100%")),
                           column(2,numericInput("step3.rate", "Step 3 Rate",  value = 70 ,width = "100%"))
                 )# end fluid row
+        ), # end tabpanel
+        tabPanel("Stepped Spawners TEST", value = "StepSpn",
+                 fluidRow(column(12,plotOutput("plot7",width = "100%", height = "600px"))),
+                 fluidRow(column(2,numericInput("stepspn1.rp", "Step 1 Ref Pt",  value = 50 ,width = "100%")),
+                          column(2,numericInput("stepspn1.target", "Step 1 Spn",  value = 50 ,width = "100%")),
+                          column(2,numericInput("stepspn2.rp", "Step 2 Ref Pt",  value = 150 ,width = "100%")),
+                          column(2,numericInput("stepspn2.target", "Step 2 Spn",  value = 150 ,width = "100%"))
+                 )# end fluid row
         ), # end tabpanel
         tabPanel("Ice Hockey Stick", value = "IceHockeyStick",
                  fluidRow(column(12,plotOutput("plot5",width = "100%", height = "600px"))),
