@@ -50,7 +50,7 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
 	  selectizeInput("plot.type", "Display Type", choices = c("Rate","Spawners","Catch","Table"), selected="Rate"),
 	  #shinyWidgets::autonumericInput(
 	 #  	    inputId = "plot.lim",label = "Plot Range",value = 300,decimalPlaces = 0, digitGroupSeparator = ","),
-	  numericInput("plot.lim", "Plot Range",  value = 200 ,   width = "100%"),
+	  numericInput("plot.lim", "Plot Range",  value = 600 ,   width = "100%"),
 	  numericInput("run.med", "Run - Median",  value = 100 ,   width = "100%"),
 	  numericInput("run.lower", "Run - Lower (Deduct %)",  value = 15,  min =0,max=100, width = "100%"),
 	  numericInput("run.upper", "Run - Upper (Add %)",  value = 30 , min= 0, max = 300,  width = "100%"),
@@ -88,7 +88,7 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
                  fluidRow(column(12,plotOutput("plot7",width = "100%", height = "600px"))),
                  fluidRow(column(2,numericInput("stepspn1.rp", "Step 1 Ref Pt",  value = 50 ,width = "100%")),
                           column(2,numericInput("stepspn1.target", "Step 1 Spn",  value = 50 ,width = "100%")),
-                          column(2,numericInput("stepspn2.rp", "Step 2 Ref Pt",  value = 150 ,width = "100%")),
+                          column(2,numericInput("stepspn2.rp", "Step 2 Ref Pt",  value = 300 ,width = "100%")),
                           column(2,numericInput("stepspn2.target", "Step 2 Spn",  value = 150 ,width = "100%"))
                  )# end fluid row
         ), # end tabpanel

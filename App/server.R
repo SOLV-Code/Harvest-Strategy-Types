@@ -89,13 +89,13 @@ library("gridExtra")
 
 	    hcr.out$Spn[below1.idx] <- hcr.out$Run[below1.idx] # below lower RP: all Run goes to Spn
 	    hcr.out$Spn[step1.idx] <- input$stepspn1.target # above lower RP but below upper RP: harvest all above target 1
-	    hcr.out$Spn[step2.idx] <- input$stepspn2.target # above lower target: harvest all above target 1
+	    hcr.out$Spn[step2.idx] <- input$stepspn2.target # above upper Ref pt: harvest all above target 2
 
 	    hcr.out$Ct <- hcr.out$Run - hcr.out$Spn
 	    hcr.out$Ct[hcr.out$Ct<0] <- 0
 	    hcr.out$ER <- round(hcr.out$Ct /  hcr.out$Run *100)
 	    hcr.out$ER[is.na(hcr.out$ER)] <- 0
-	    print(hcr.out)
+	    #print(hcr.out)
 
 	  }
 
