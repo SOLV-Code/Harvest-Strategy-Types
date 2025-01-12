@@ -12,7 +12,7 @@ This app illustrates different types of harvest strategies for Pacific salmon (S
 
 Supporting information  is being compiled in the [wiki pages](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki)
    * [Further Reading](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Further-Reading)
-   * [Worked Examples](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Worked-Examples) : using the app the plot harvest strategies from different fisheries
+   * [Worked Example: Fraser Chum "Clockwork" Stepped Harvest Strategy](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Worked-Example:-Fraser-Chum-%22Clockwork%22-Stepped-Harvest-Strategy) : using the app to plot the harvest strategy for this fishery
 
 
 ### How to use the App
@@ -22,19 +22,8 @@ The app displays different types of harvest strategy, and shows the implied targ
 Users can change the specifications for each type of harvest rule (e.g. set the fixed exploitation rate, or set the steps for a stepped ER rule) and vary the abundance estimate (e.g. median and lower/upper bounds on in-season run size estimate).
 
 
-### Planned Features
+### Additional Features
 
-The following additional features are planned:
-
-* option for "minimum ER" when Rate = "Total Allowable Mort"
-* option for including in-river mortality
-* Fraser Pink- style harvest rule
-* option to display boxplot of historic run sizes
-
-
-You can follow progress at [this thread](https://github.com/SOLV-Code/Harvest-Strategy-Types/issues/3).
-
-
-You can add feature requests at [this thread](https://github.com/SOLV-Code/Harvest-Strategy-Types/issues/11).
+Additional harvest strategy types and diagnostic plots will be added over time. You can follow progress at [this thread](https://github.com/SOLV-Code/Harvest-Strategy-Types/issues/3) and request features at [this thread](https://github.com/SOLV-Code/Harvest-Strategy-Types/issues/11).
 
 

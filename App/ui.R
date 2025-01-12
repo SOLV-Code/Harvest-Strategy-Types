@@ -84,7 +84,7 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
                           column(2,numericInput("step3.rate", "Step 3 Rate",  value = 70 ,width = "100%"))
                 )# end fluid row
         ), # end tabpanel
-        tabPanel("Stepped Spawners TEST", value = "StepSpn",
+        tabPanel("Stepped Spawners", value = "StepSpn",
                  fluidRow(column(12,plotOutput("plot7",width = "100%", height = "600px"))),
                  fluidRow(column(2,numericInput("stepspn1.rp", "Step 1 Ref Pt",  value = 50 ,width = "100%")),
                           column(2,numericInput("stepspn1.target", "Step 1 Spn",  value = 50 ,width = "100%")),
