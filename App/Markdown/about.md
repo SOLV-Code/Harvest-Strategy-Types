@@ -1,10 +1,10 @@
 ### Version
 
-Version 0.3: 2022-06-16
+Version 0.9: 2025-01-12
 
 ### Citation
 
-G. Pestal, A.-M. Huang, and C. Carr-Harris. An interactive tool for exploring alternative harvest rule types for Pacific Salmon. Available online at https://solv-code.shinyapps.io/harveststrategytypes
+G. Pestal, A.-M. Huang, and C. Carr-Harris. 2025. An interactive tool for exploring alternative harvest rule types for Pacific Salmon. Available online at https://solv-code.shinyapps.io/harveststrategytypes
 
 ### Repository
 
@@ -12,7 +12,7 @@ G. Pestal, A.-M. Huang, and C. Carr-Harris. An interactive tool for exploring al
 * Please leave feedback, bug reports, and feature requests on the [issues page](https://github.com/SOLV-Code/Harvest-Strategy-Types/issues)
 * We've also started compiling supporting information in the [wiki pages](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki)
    * [Further Reading](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Further-Reading)
-   * [Worked Examples](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Worked-Examples) : using the app the plot harvest strategies from different fisheries
+   * [Worked Example: Fraser Chum "Clockwork" Stepped Harvest Strategy](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Worked-Example:-Fraser-Chum-%22Clockwork%22-Stepped-Harvest-Strategy) : using the app to plot the harvest strategy for this fishery.
 
 
 ### Purpose
