@@ -27,3 +27,17 @@ Users can change the specifications for each type of harvest rule (e.g. set the 
 Additional harvest strategy types and diagnostic plots will be added over time. You can follow progress at [this thread](https://github.com/SOLV-Code/Harvest-Strategy-Types/issues/3) and request features at [this thread](https://github.com/SOLV-Code/Harvest-Strategy-Types/issues/11).
 
 
+### Citation - App
+
+To cite the app directly, use:
+
+G. Pestal, A.-M. Huang, and C. Carr-Harris. 2025. An interactive tool for exploring alternative harvest rule types for Pacific Salmon. Available online at https://solv-code.shinyapps.io/harveststrategytypes
+
+### Citation - Repository
+
+If you need a permament digital object identifier (doi), cite the Zenodo release of the Github repository:
+
+G. Pestal, A.-M. Huang, and C. Carr-Harris. 2025. SOLV-Code/Harvest-Strategy-Types (v1.0). Zenodo. https://doi.org/10.5281/zenodo.14635493
+
+[![DOI](https://zenodo.org/badge/497840416.svg)](https://doi.org/10.5281/zenodo.14635493)
+

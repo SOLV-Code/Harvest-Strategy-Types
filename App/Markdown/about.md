@@ -1,10 +1,22 @@
 ### Version
 
-Version 0.9: 2025-01-12
+Version 1.0: 2025-01-12
 
-### Citation
+### Citation - App
+
+To cite the app directly, use:
 
 G. Pestal, A.-M. Huang, and C. Carr-Harris. 2025. An interactive tool for exploring alternative harvest rule types for Pacific Salmon. Available online at https://solv-code.shinyapps.io/harveststrategytypes
+
+### Citation - Repository
+
+If you need a permament digital object identifier (doi), cite the Zenodo release of the Github repository:
+
+G. Pestal, A.-M. Huang, and C. Carr-Harris. 2025. SOLV-Code/Harvest-Strategy-Types (v1.0). Zenodo. https://doi.org/10.5281/zenodo.14635493
+
+[![DOI](https://zenodo.org/badge/497840416.svg)](https://doi.org/10.5281/zenodo.14635493)
+
+
 
 ### Repository
 
