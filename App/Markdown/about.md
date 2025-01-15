@@ -1,6 +1,6 @@
 ### Version
 
-Version 1.0: 2025-01-12
+Version 1.1: 2025-01-15
 
 ### Citation - App
 

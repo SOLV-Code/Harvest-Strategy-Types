@@ -104,6 +104,13 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
                  fluidRow(column(3,numericInput("field.rp1", "Spn Target",  value = 50 ,width = "100%")),
                           column(3,numericInput("field.rate", "Cap on Rate",  value = 65 ,width = "100%"))
                  )# end fluid row
+        ), # end tabpanel
+        tabPanel("Field Hockey Stick with ER Floor", value = "FieldHockeyStickwFloor",
+                 fluidRow(column(12,plotOutput("plot8",width = "100%", height = "600px"))),
+                 fluidRow(column(3,numericInput("fieldwfloor.rp1", "Spn Target",  value = 50 ,width = "100%")),
+                          column(3,numericInput("fieldwfloor.rate", "Cap on Rate",  value = 65 ,width = "100%")),
+                          column(3,numericInput("fieldwfloor.floor", "Min ER",  value = 10 ,width = "100%"))
+                 )# end fluid row
         ) # end tabpanel
 		 ) # end tabset panel
 
