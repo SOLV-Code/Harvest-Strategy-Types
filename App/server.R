@@ -160,18 +160,17 @@ library("gridExtra")
 
 	  }
 
-
 	  if(input$display.tab == "FieldHockeyStick"){
 
-      hcr.out <- data.frame(Run = run.vec ,ER = NA)
+	    hcr.out <- data.frame(Run = run.vec ,ER = NA)
 
-      # calc abd above spn target
-      abd.above.spn <- 	 hcr.out$Run  - input$field.rp1
-      abd.above.spn[abd.above.spn<0] <- 0
+	    # calc abd above spn target
+	    abd.above.spn <- 	 hcr.out$Run  - input$field.rp1
+	    abd.above.spn[abd.above.spn<0] <- 0
 
-      # calc potential rate (bounded by cap)
-      hcr.out$ER <- round(abd.above.spn/hcr.out$Run,5)*100
-      hcr.out$ER <- pmin(hcr.out$ER,input$field.rate)
+	    # calc potential rate (bounded by cap)
+	    hcr.out$ER <- round(abd.above.spn/hcr.out$Run,5)*100
+	    hcr.out$ER <- pmin(hcr.out$ER,input$field.rate)
 
 
 	    hcr.out$Spn  <- hcr.out$Run  * (1-hcr.out$ER/100)
@@ -181,6 +180,28 @@ library("gridExtra")
 	    #print(hcr.out)
 
 	  }
+
+	  if(input$display.tab == "FieldHockeyStickwFloor"){
+
+      hcr.out <- data.frame(Run = run.vec ,ER = NA)
+
+      # calc abd above spn target
+      abd.above.spn <- 	 hcr.out$Run  - input$fieldwfloor.rp1
+      abd.above.spn[abd.above.spn<0] <- 0
+
+      # calc potential rate (bounded by cap)
+      hcr.out$ER <- round(abd.above.spn/hcr.out$Run,5)*100
+      hcr.out$ER <- pmin(hcr.out$ER,input$fieldwfloor.rate)
+      hcr.out$ER <- pmax(hcr.out$ER,input$fieldwfloor.floor)
+
+	    hcr.out$Spn  <- hcr.out$Run  * (1-hcr.out$ER/100)
+	    hcr.out$Ct <- hcr.out$Run  * (hcr.out$ER/100)
+
+
+	    #print(hcr.out)
+
+	  }
+
 
 
      hcr.out <- hcr.out %>% select(Run,ER,Spn,Ct)
@@ -204,7 +225,7 @@ library("gridExtra")
 	 # to show same plot on diff panels, need to create copies
 	 #https://stackoverflow.com/a/44242503
 
-	output$plot7 <-  output$plot6 <- output$plot5 <- output$plot4 <- output$plot3 <- output$plot2 <- output$plot1 <- renderPlot({
+	output$plot8 <-	output$plot7 <-  output$plot6 <- output$plot5 <- output$plot4 <- output$plot3 <- output$plot2 <- output$plot1 <- renderPlot({
 
 				hcr.in <- hcr.calc()
         #print(hcr.in)
