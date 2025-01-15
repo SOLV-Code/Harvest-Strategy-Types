@@ -12,7 +12,8 @@ This app illustrates different types of harvest strategies for Pacific salmon (S
 
 Supporting information  is being compiled in the [wiki pages](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki)
    * [Further Reading](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Further-Reading)
-   * [Worked Example: Fraser Chum "Clockwork" Stepped Harvest Strategy](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Worked-Example:-Fraser-Chum-%22Clockwork%22-Stepped-Harvest-Strategy) : using the app to plot the harvest strategy for this fishery
+   * [Worked Example: Fraser Chum "Clockwork" Stepped Harvest Strategy](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Worked-Example:-Fraser-Chum-%22Clockwork%22-Stepped-Harvest-Strategy) 
+   * [Worked Example: Fraser Sockeye TAM Rules](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Worked-Example:-Fraser-Sockeye-TAM-Rule)
 
 
 ### How to use the App
