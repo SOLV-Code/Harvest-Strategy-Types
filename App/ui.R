@@ -32,7 +32,7 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
                       titlePanel("App to Explore Salmon Harvest Strategy Types"),
 
                       fluidRow(
-                        column(7,
+                        column(10,
                                includeMarkdown("Markdown/about.md")
                         )
                       )
@@ -83,6 +83,18 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
                           column(2,numericInput("step3.rp", "Step 3 Ref Pt",  value = 170 ,width = "100%")),
                           column(2,numericInput("step3.rate", "Step 3 Rate",  value = 70 ,width = "100%"))
                 )# end fluid row
+        ), # end tabpanel
+        tabPanel("Sloped ER", value = "SlopedER",
+                 fluidRow(column(12,plotOutput("plot9",width = "100%", height = "600px"))),
+                 splitLayout(numericInput("slopeder.rp1", "RP1",  value = 50 ,width = "100%"),
+                             numericInput("slopeder.rate1", "Rate1",  value = 0 ,width = "100%"),
+                             numericInput("slopeder.rp2", "RP2",  value = 150 ,width = "100%"),
+                             numericInput("slopeder.rate2", "Rate2",  value = 25 ,width = "100%"),
+                             numericInput("slopeder.rp3", "RP3",  value = 300 ,width = "100%"),
+                             numericInput("slopeder.rate3", "Rate3",  value = 30 ,width = "100%"),
+                             numericInput("slopeder.rp4", "RP4",  value = 400 ,width = "100%"),
+                             numericInput("slopeder.rate4", "Rate4",  value = 45 ,width = "100%"),
+                             cellWidths = "10%")
         ), # end tabpanel
         tabPanel("Stepped Spawners", value = "StepSpn",
                  fluidRow(column(12,plotOutput("plot7",width = "100%", height = "600px"))),

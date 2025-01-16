@@ -137,6 +137,55 @@ library("gridExtra")
 	  }
 
 
+	  if(input$display.tab == "SlopedER"){
+
+	    # 4 ref points, each have run size and corresponding ER
+	    # this results in 5 zones:
+	    # Zone 0: Run is 0 to RP1 -> ER = 0
+	    # Zone 1: RP1 < Run <= RP2  -> slope and intercept based on points 1 and 2
+	    # Zone 2: RP2 < Run <= RP3  -> slope and intercept based on points 2 and 3
+	    # Zone 3: RP3 < Run <= RP4  -> slope and intercept based on points 3 and 4
+	    # Zone 4: Run larger than RP4 -> ER = ER4
+
+	    zone0.idx <- run.vec < input$slopeder.rp1
+	    zone1.idx <- run.vec >= input$slopeder.rp1 & run.vec < input$slopeder.rp2
+	    zone2.idx <- run.vec >= input$slopeder.rp2 & run.vec < input$slopeder.rp3
+	    zone3.idx <- run.vec >= input$slopeder.rp3 & run.vec < input$slopeder.rp4
+	    zone4.idx <- run.vec >= input$slopeder.rp4
+
+	    # line fit for Zone 1
+	    line1.pts <- data.frame(Run = c(input$slopeder.rp1,input$slopeder.rp2),
+	                            ER = c(input$slopeder.rate1,input$slopeder.rate2))
+	    line1.fit <- lm(ER ~ Run, data = line1.pts)
+      # lines 2,3
+	    line2.pts <- data.frame(Run = c(input$slopeder.rp2,input$slopeder.rp3),
+	                            ER = c(input$slopeder.rate2,input$slopeder.rate3))
+	    line2.fit <- lm(ER ~ Run, data = line2.pts)
+	    line3.pts <- data.frame(Run = c(input$slopeder.rp3,input$slopeder.rp4),
+	                            ER = c(input$slopeder.rate3,input$slopeder.rate4))
+	    line3.fit <- lm(ER ~ Run, data = line3.pts)
+
+
+
+	    hcr.out <- data.frame(Run = run.vec ,ER = NA)
+	    hcr.out$ER[zone0.idx] <- 0
+	    hcr.out$ER[zone1.idx] <- predict(line1.fit,newdata=hcr.out[zone1.idx,])
+	    hcr.out$ER[zone2.idx] <- predict(line2.fit,newdata=hcr.out[zone2.idx,])
+	    hcr.out$ER[zone3.idx] <- predict(line3.fit,newdata=hcr.out[zone3.idx,])
+	    hcr.out$ER[zone4.idx] <- input$slopeder.rate4
+
+	    hcr.out$Spn <- hcr.out$Run * (1-hcr.out$ER/100)
+	    hcr.out$Ct <- hcr.out$Run * hcr.out$ER/100
+
+	    #print(hcr.out)
+
+	  }
+
+
+
+
+
+
 
 	  if(input$display.tab == "IceHockeyStick"){
 
@@ -225,7 +274,7 @@ library("gridExtra")
 	 # to show same plot on diff panels, need to create copies
 	 #https://stackoverflow.com/a/44242503
 
-	output$plot8 <-	output$plot7 <-  output$plot6 <- output$plot5 <- output$plot4 <- output$plot3 <- output$plot2 <- output$plot1 <- renderPlot({
+	output$plot9 <- output$plot8 <-	output$plot7 <-  output$plot6 <- output$plot5 <- output$plot4 <- output$plot3 <- output$plot2 <- output$plot1 <- renderPlot({
 
 				hcr.in <- hcr.calc()
         #print(hcr.in)

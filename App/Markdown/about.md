@@ -1,6 +1,6 @@
 ### Version
 
-Version 1.1: 2025-01-15
+Version 1.2: 2025-01-16
 
 ### Citation - App
 
@@ -24,7 +24,9 @@ G. Pestal, A.-M. Huang, and C. Carr-Harris. 2025. SOLV-Code/Harvest-Strategy-Typ
 * Please leave feedback, bug reports, and feature requests on the [issues page](https://github.com/SOLV-Code/Harvest-Strategy-Types/issues)
 * We've also started compiling supporting information in the [wiki pages](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki)
    * [Further Reading](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Further-Reading)
-   * [Worked Example: Fraser Chum "Clockwork" Stepped Harvest Strategy](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Worked-Example:-Fraser-Chum-%22Clockwork%22-Stepped-Harvest-Strategy) : using the app to plot the harvest strategy for this fishery.
+   * [Worked Example: Fraser Chum "Clockwork" Stepped Harvest Strategy](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Worked-Example:-Fraser-Chum-%22Clockwork%22-Stepped-Harvest-Strategy) 
+   * [Worked Example: Fraser Sockeye TAM Rules](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Worked-Example:-Fraser-Sockeye-TAM-Rule)
+   * [Worked Example: Skeena Sockeye Canadian Marine Commercial Fishery](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Worked-Example:-Skeena-Sockeye-Canadian-Marine-Commercial-Fishery)
 
 
 ### Purpose
