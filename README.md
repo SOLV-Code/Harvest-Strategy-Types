@@ -14,7 +14,7 @@ Supporting information  is being compiled in the [wiki pages](https://github.com
    * [Further Reading](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Further-Reading)
    * [Worked Example: Fraser Chum "Clockwork" Stepped Harvest Strategy](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Worked-Example:-Fraser-Chum-%22Clockwork%22-Stepped-Harvest-Strategy) 
    * [Worked Example: Fraser Sockeye TAM Rules](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Worked-Example:-Fraser-Sockeye-TAM-Rule)
-
+   * [Worked Example: Skeena Sockeye Canadian Marine Commercial Fishery](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Worked-Example:-Skeena-Sockeye-Canadian-Marine-Commercial-Fishery)
 
 ### How to use the App
 
