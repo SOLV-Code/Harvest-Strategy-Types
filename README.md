@@ -38,7 +38,7 @@ G. Pestal, A.-M. Huang, and C. Carr-Harris. 2025. An interactive tool for explor
 
 If you need a permament digital object identifier (doi), cite the Zenodo release of the Github repository:
 
-G. Pestal, A.-M. Huang, and C. Carr-Harris. 2025. SOLV-Code/Harvest-Strategy-Types (v1.0). Zenodo. https://doi.org/10.5281/zenodo.14635493
+G. Pestal, A.-M. Huang, and C. Carr-Harris. 2025. SOLV-Code/Harvest-Strategy-Types (v1.2). Zenodo. https://doi.org/10.5281/zenodo.14635493
 
 [![DOI](https://zenodo.org/badge/497840416.svg)](https://doi.org/10.5281/zenodo.14635493)
 
