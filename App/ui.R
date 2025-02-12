@@ -133,8 +133,71 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
 
 
 
-	)
+	), # end Explore HCR tab panel
+	
+	
+	
+    tabPanel("Compare 2 HCR", value= "Compare",
 
+
+	pageWithSidebar(
+	headerPanel("Compare 2 HCR"),
+
+	sidebarPanel(
+	  selectizeInput("plot.type.comp", "Display Type", choices = c("Rate","Spawners","Catch","Table"), selected="Rate"),
+	  #shinyWidgets::autonumericInput(
+	 #  	    inputId = "plot.lim",label = "Plot Range",value = 300,decimalPlaces = 0, digitGroupSeparator = ","),
+	  numericInput("plot.lim.comp", "Plot Range",  value = 600 ,   width = "100%"),
+	  numericInput("run.med.comp", "Run - Median",  value = 100 ,   width = "100%"),
+	  numericInput("run.lower.comp", "Run - Lower (Deduct %)",  value = 15,  min =0,max=100, width = "100%"),
+	  numericInput("run.upper.comp", "Run - Upper (Add %)",  value = 30 , min= 0, max = 300,  width = "100%"),
+	  #numericInput("min.er", "MinER",  value = 0 ,  min = 0, max = 100, step = 1, width = "100%"),
+	  selectizeInput("rate.type.comp", "Rate Type", choices = c("ER","TotalMort"),selected = "ER"),
+	  textInput("units.use.comp","Unit Label",value ="(1000s of Fish)"),
+	  textInput("run.label.comp","Run Label",value ="In-season Run Estimate"),
+    width = 2
+		) # end sidebar
+  ,
+
+
+     mainPanel(
+
+
+	tabsetPanel(type = "tabs", id = "display.tab.comp",
+        tabPanel("HCR 1", value = "HCR 1", 
+			selectizeInput("hcr1.type", "Harvest Rule Type", choices = c("Fixed Rate","Fixed Spawners"), selected="Fixed Rate"),
+			
+			conditionalPanel(condition = "input['hcr1.type'] == 'Fixed Rate'",
+		                 numericInput("fixed.rate.hcr1", "Fixed Rate Target",  value = 50 , min = 0 , max = 100, step = 1)
+                 ),
+			conditionalPanel(condition = "input['hcr1.type'] == 'Fixed Spawners'",
+		                 numericInput("fixed.spn.hcr1", "Fixed Spawner Target",  value = 50 , min = 0 , max = 100, step = 1)
+                 )				 
+				 
+			) , # end HCR 1 tab panel	 
+				
+        tabPanel("HCR 2", value = "HCR 2", 
+ 			selectizeInput("hcr2.type", "Harvest Rule Type", choices = c("Fixed Rate","Fixed Spawners"), selected="Fixed Rate"),
+			
+			conditionalPanel(condition = "input['hcr2.type'] == 'Fixed Rate'",
+		                 numericInput("fixed.rate.hcr2", "Fixed Rate Target",  value = 50 , min = 0 , max = 100, step = 1)
+                 ),
+			conditionalPanel(condition = "input['hcr2.type'] == 'Fixed Spawners'",
+		                 numericInput("fixed.spn.hcr2", "Fixed Spawner Target",  value = 50 , min = 0 , max = 100, step = 1)
+                 )
+                 ),
+        tabPanel("Plot", value = "Plot", plotOutput("plotComp",width = "100%", height = "600px")
+                 ),
+		 ) # end tabset panel
+
+
+		) # end main panel
+
+		) #end page with side bar for model pre-check
+
+
+
+	) # End COmpare 2 HCR
 
 
 
