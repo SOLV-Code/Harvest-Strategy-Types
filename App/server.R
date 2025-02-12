@@ -53,66 +53,30 @@ library("gridExtra")
 
 
 
+
 	    if(input$display.tab == "FixedRate"){
-
-			hcr.out <- data.frame(Run = run.vec ,ER = rep(input$fixed.rate,length(run.vec)))
-			hcr.out$Spn <- hcr.out$Run * (1-hcr.out$ER/100)
-			hcr.out$Ct <- hcr.out$Run * hcr.out$ER/100
-	    }
-
-
-
+    			hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$display.tab ,
+			        hcr.settings = list(fixed.rate = input$fixed.rate))
+			    }
 	  if(input$display.tab == "FixedSpn"){
-
-	    hcr.out <- data.frame(Run = run.vec ,Spn = rep(input$fixed.spn,length(run.vec)))
-	    below.idx <- (hcr.out$Run - hcr.out$Spn) <0
-	    hcr.out$Spn[below.idx] <- hcr.out$Run[below.idx]
-	    hcr.out$Ct <- hcr.out$Run - hcr.out$Spn
-	    hcr.out$Ct[hcr.out$Ct<0] <- 0
-	    hcr.out$ER <- round(hcr.out$Ct /  hcr.out$Run *100)
-	    hcr.out$ER[is.na(hcr.out$ER)] <- 0
-	    #print(hcr.out)
-
-	  }
-
+	       hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$display.tab ,
+	            hcr.settings = list(fixed.spn = input$fixed.spn))
+	 	  }
 
 	  if(input$display.tab == "StepSpn"){
 
-
-
-	    hcr.out <- data.frame(Run = run.vec ,Spn = run.vec)
-
-      print(input$step1spn.rp)
-	    below1.idx <- hcr.out$Run <= input$stepspn1.rp
-	    step1.idx <- hcr.out$Run > input$stepspn1.rp & hcr.out$Run <= input$stepspn2.rp
-	    step2.idx <- hcr.out$Run > input$stepspn2.rp
-
-	    hcr.out$Spn[below1.idx] <- hcr.out$Run[below1.idx] # below lower RP: all Run goes to Spn
-	    hcr.out$Spn[step1.idx] <- input$stepspn1.target # above lower RP but below upper RP: harvest all above target 1
-	    hcr.out$Spn[step2.idx] <- input$stepspn2.target # above upper Ref pt: harvest all above target 2
-
-	    hcr.out$Ct <- hcr.out$Run - hcr.out$Spn
-	    hcr.out$Ct[hcr.out$Ct<0] <- 0
-	    hcr.out$ER <- round(hcr.out$Ct /  hcr.out$Run *100)
-	    hcr.out$ER[is.na(hcr.out$ER)] <- 0
-	    #print(hcr.out)
-
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$display.tab ,
+	                       hcr.settings = list(stepspn1.rp=input$stepspn1.rp,
+	                                           stepspn2.rp=input$stepspn2.rp,
+	                                           stepspn1.target=input$stepspn1.target,
+	                                           stepspn2.target=input$stepspn2.target))
 	  }
 
 
 	  if(input$display.tab == "FixedCt"){
-
-
-	    hcr.out <- data.frame(Run = run.vec ,Ct = rep(input$fixed.ct,length(run.vec)))
-	    below.idx <- (hcr.out$Run - hcr.out$Ct) <0
-	    hcr.out$Ct[below.idx] <- hcr.out$Run[below.idx]
-	    hcr.out$Spn <- hcr.out$Run - hcr.out$Ct
-	    hcr.out$Spn[hcr.out$Spn<0] <- 0
-	    hcr.out$ER <- round(hcr.out$Ct /  hcr.out$Run *100)
-
-	    #print(hcr.out)
-
-	  }
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$display.tab ,
+	                       hcr.settings = list(fixed.ct= input$fixed.ct))
+	     	  }
 
 
 	  if(input$display.tab == "Step"){
