@@ -134,9 +134,9 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
 
 
 	), # end Explore HCR tab panel
-	
-	
-	
+
+
+
     tabPanel("Compare 2 HCR", value= "Compare",
 
 
@@ -164,27 +164,38 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
 
 
 	tabsetPanel(type = "tabs", id = "display.tab.comp",
-        tabPanel("HCR 1", value = "HCR 1", 
-			selectizeInput("hcr1.type", "Harvest Rule Type", choices = c("Fixed Rate","Fixed Spawners"), selected="Fixed Rate"),
-			
+        tabPanel("HCR 1", value = "HCR 1",
+			selectizeInput("hcr1.type", "Harvest Rule Type", choices = c("Fixed Rate","Fixed Spn"),
+			               selected="Fixed Rate"),
+
 			conditionalPanel(condition = "input['hcr1.type'] == 'Fixed Rate'",
 		                 numericInput("fixed.rate.hcr1", "Fixed Rate Target",  value = 50 , min = 0 , max = 100, step = 1)
                  ),
-			conditionalPanel(condition = "input['hcr1.type'] == 'Fixed Spawners'",
+			conditionalPanel(condition = "input['hcr1.type'] == 'Fixed Spn'",
 		                 numericInput("fixed.spn.hcr1", "Fixed Spawner Target",  value = 50 , min = 0 , max = 100, step = 1)
-                 )				 
-				 
-			) , # end HCR 1 tab panel	 
-				
-        tabPanel("HCR 2", value = "HCR 2", 
- 			selectizeInput("hcr2.type", "Harvest Rule Type", choices = c("Fixed Rate","Fixed Spawners"), selected="Fixed Rate"),
-			
+                 ),
+			selectizeInput("hcr1.line.col", "Line Color", choices = c("darkblue","red","darkgrey"),
+			               selected="darkblue"),
+			selectizeInput("hcr1.line.type", "Line Type", choices = 1:4,
+			               selected=1)
+
+			) , # end HCR 1 tab panel
+
+        tabPanel("HCR 2", value = "HCR 2",
+ 			selectizeInput("hcr2.type", "Harvest Rule Type", choices = c("Fixed Rate","Fixed Spn"),
+ 			               selected="Fixed Spn"),
+
 			conditionalPanel(condition = "input['hcr2.type'] == 'Fixed Rate'",
 		                 numericInput("fixed.rate.hcr2", "Fixed Rate Target",  value = 50 , min = 0 , max = 100, step = 1)
                  ),
-			conditionalPanel(condition = "input['hcr2.type'] == 'Fixed Spawners'",
+			conditionalPanel(condition = "input['hcr2.type'] == 'Fixed Spn'",
 		                 numericInput("fixed.spn.hcr2", "Fixed Spawner Target",  value = 50 , min = 0 , max = 100, step = 1)
                  )
+			,
+			selectizeInput("hcr2.line.col", "Line Color", choices = c("darkblue","red","darkgrey"),
+			               selected="red"),
+			selectizeInput("hcr2.line.type", "Line Type", choices = 1:4,
+			               selected=2)
                  ),
         tabPanel("Plot", value = "Plot", plotOutput("plotComp",width = "100%", height = "600px")
                  ),
