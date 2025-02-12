@@ -463,8 +463,11 @@ library("gridExtra")
 	  hcr2.in <- comp.hcr2.calc()
 	  hcr2.in <- hcr2.in %>% arrange(Run)
 
-    plot(hcr1.in$Run,hcr1.in$Spn,type="l")
-    lines(hcr2.in$Run,hcr2.in$Spn,type="l",col="red",lty=2)
+	  print("lty")
+	  print(input$hcr1.line.type)
+
+    plot(hcr1.in$Run,hcr1.in$Spn,type="l",col= input$hcr1.line.col,lty=as.numeric(input$hcr1.line.type))
+    lines(hcr2.in$Run,hcr2.in$Spn,type="l",col= input$hcr2.line.col,lty=as.numeric(input$hcr2.line.type))
 
 
 	})
