@@ -395,32 +395,76 @@ library("gridExtra")
 
 	  if(input$hcr1.type == "Fixed Rate"){
 
-	    hcr.out <- data.frame(Run = run.vec ,ER = rep(input$fixed.rate,length(run.vec)))
+	    hcr.out <- data.frame(Run = run.vec ,ER = rep(input$fixed.rate.hcr1,length(run.vec)))
 	    hcr.out$Spn <- hcr.out$Run * (1-hcr.out$ER/100)
 	    hcr.out$Ct <- hcr.out$Run * hcr.out$ER/100
 	  }
 
 	  if(input$hcr1.type == "Fixed Spn"){
 
-	    hcr.out <- data.frame(Run = run.vec ,Spn = rep(input$fixed.spn,length(run.vec)))
+	    hcr.out <- data.frame(Run = run.vec ,Spn = rep(input$fixed.spn.hcr1,length(run.vec)))
 	    below.idx <- (hcr.out$Run - hcr.out$Spn) <0
 	    hcr.out$Spn[below.idx] <- hcr.out$Run[below.idx]
 	    hcr.out$Ct <- hcr.out$Run - hcr.out$Spn
 	    hcr.out$Ct[hcr.out$Ct<0] <- 0
 	    hcr.out$ER <- round(hcr.out$Ct /  hcr.out$Run *100)
 	    hcr.out$ER[is.na(hcr.out$ER)] <- 0
-	    #print(hcr.out)
+	  	  }
 
+	  print("hcr1")
+	  print(hcr.out)
+
+	  }) # end HCR 1 calcs
+
+
+
+	comp.hcr2.calc <- reactive({
+
+	  run.vec <- c(input$run.med,
+	               max(c(0,input$run.med * (1 - input$run.lower/100))) ,
+	               input$run.med * (1 + input$run.upper/100),
+	               seq(0,input$plot.lim,length.out = 97)
+	  )
+
+
+	  if(input$hcr2.type == "Fixed Rate"){
+
+	    hcr.out <- data.frame(Run = run.vec ,ER = rep(input$fixed.rate.hcr2,length(run.vec)))
+	    hcr.out$Spn <- hcr.out$Run * (1-hcr.out$ER/100)
+	    hcr.out$Ct <- hcr.out$Run * hcr.out$ER/100
 	  }
-	}) # end HCR 1 calcs
+
+	  if(input$hcr2.type == "Fixed Spn"){
+
+	    hcr.out <- data.frame(Run = run.vec ,Spn = rep(input$fixed.spn.hcr2,length(run.vec)))
+	    below.idx <- (hcr.out$Run - hcr.out$Spn) <0
+	    hcr.out$Spn[below.idx] <- hcr.out$Run[below.idx]
+	    hcr.out$Ct <- hcr.out$Run - hcr.out$Spn
+	    hcr.out$Ct[hcr.out$Ct<0] <- 0
+	    hcr.out$ER <- round(hcr.out$Ct /  hcr.out$Run *100)
+	    hcr.out$ER[is.na(hcr.out$ER)] <- 0
+	  }
+
+	  print("hcr2")
+	  print(hcr.out)
 
 
-	output$plot.comp <- renderPlot({
+	}) # end HCR 2 calcs
+
+
+
+
+
+	output$plotComp <- renderPlot({
 
 	  hcr1.in <- comp.hcr1.calc()
+	  hcr1.in <- hcr1.in %>% arrange(Run)
+
 	  hcr2.in <- comp.hcr2.calc()
+	  hcr2.in <- hcr2.in %>% arrange(Run)
 
-
+    plot(hcr1.in$Run,hcr1.in$Spn,type="l")
+    lines(hcr2.in$Run,hcr2.in$Spn,type="l",col="red",lty=2)
 
 
 	})
