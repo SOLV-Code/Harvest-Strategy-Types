@@ -7,4 +7,13 @@ calcHCR <- function(){
 
 
 
+
+
+
+
+
+
+
+
+
 }
