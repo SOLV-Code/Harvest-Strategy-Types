@@ -164,6 +164,10 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
 
 
 	tabsetPanel(type = "tabs", id = "display.tab.comp",
+
+    tabPanel("Plot", value = "Plot", plotOutput("plotComp",width = "100%", height = "600px")
+	            ) ,
+
         tabPanel("HCR 1", value = "HCR 1",
 
        textInput("hcr1.label","HCR 1 Label",value ="HCR 1"),
@@ -319,9 +323,8 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
 			               selected="darkblue"),
 			selectizeInput("hcr2.line.type", "Line Type", choices = 1:4,
 			               selected=2)
-                 ),
-        tabPanel("Plot", value = "Plot", plotOutput("plotComp",width = "100%", height = "600px")
-                 ),
+                 )
+
 		 ) # end tabset panel
 
 
