@@ -276,26 +276,92 @@ library("gridExtra")
 	  )
 
 
-	  if(input$hcr1.type == "Fixed Rate"){
 
-	    hcr.out <- data.frame(Run = run.vec ,ER = rep(input$fixed.rate.hcr1,length(run.vec)))
-	    hcr.out$Spn <- hcr.out$Run * (1-hcr.out$ER/100)
-	    hcr.out$Ct <- hcr.out$Run * hcr.out$ER/100
+	  if(input$hcr1.type == "FixedRate"){
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr1.type ,
+	                       hcr.settings = list(fixed.rate = input$fixed.rate.hcr1))
+	  }
+	  if(input$hcr1.type == "FixedSpn"){
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr1.type ,
+	                       hcr.settings = list(fixed.spn = input$fixed.spn.hcr1))
 	  }
 
-	  if(input$hcr1.type == "Fixed Spn"){
+	  if(input$hcr1.type == "StepSpn"){
 
-	    hcr.out <- data.frame(Run = run.vec ,Spn = rep(input$fixed.spn.hcr1,length(run.vec)))
-	    below.idx <- (hcr.out$Run - hcr.out$Spn) <0
-	    hcr.out$Spn[below.idx] <- hcr.out$Run[below.idx]
-	    hcr.out$Ct <- hcr.out$Run - hcr.out$Spn
-	    hcr.out$Ct[hcr.out$Ct<0] <- 0
-	    hcr.out$ER <- round(hcr.out$Ct /  hcr.out$Run *100)
-	    hcr.out$ER[is.na(hcr.out$ER)] <- 0
-	  	  }
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr1.type ,
+	                       hcr.settings = list(stepspn1.rp=input$stepspn1.rp.hcr1,
+	                                           stepspn2.rp=input$stepspn2.rp.hcr1,
+	                                           stepspn1.target=input$stepspn1.target.hcr1,
+	                                           stepspn2.target=input$stepspn2.target.hcr1))
+	  }
 
-	  print("hcr1")
-	  print(hcr.out)
+
+	  if(input$hcr1.type == "FixedCt"){
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr1.type ,
+	                       hcr.settings = list(fixed.ct= input$fixed.ct.hcr1))
+	  }
+
+
+	  if(input$hcr1.type == "Step"){
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr1.type ,
+	                       hcr.settings = list(step1.rp=input$step1.rp.hcr1,
+	                                           step2.rp=input$step2.rp.hcr1,
+	                                           step3.rp=input$step3.rp.hcr1,
+	                                           step1.rate=input$step1.rate.hcr1,
+	                                           step2.rate=input$step2.rate.hcr1,
+	                                           step3.rate=input$step3.rate.hcr1
+	                       ))
+	  }
+
+
+	  if(input$hcr1.type == "SlopedER"){
+
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr1.type ,
+	                       hcr.settings = list(slopeder.rp1=input$slopeder.rp1.hcr1,
+	                                           slopeder.rp2=input$slopeder.rp2.hcr1,
+	                                           slopeder.rp3=input$slopeder.rp3.hcr1,
+	                                           slopeder.rp4 = input$slopeder.rp4.hcr1,
+	                                           slopeder.rate1=input$slopeder.rate1.hcr1,
+	                                           slopeder.rate2=input$slopeder.rate2.hcr1,
+	                                           slopeder.rate3=input$slopeder.rate3.hcr1,
+	                                           slopeder.rate4 =input$slopeder.rate4.hcr1
+	                       ))
+
+	  }
+
+
+	  if(input$hcr1.type == "IceHockeyStick"){
+
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr1.type ,
+	                       hcr.settings = list(ice.rp1=input$ice.rp1.hcr1,
+	                                           ice.rp2=input$ice.rp2.hcr1,
+	                                           ice.rate=input$ice.rate.hcr1))
+
+
+	  }
+
+	  if(input$hcr1.type == "FieldHockeyStick"){
+
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr1.type ,
+	                       hcr.settings = list(field.rp1=input$field.rp1.hcr1,
+	                                           field.rate=input$field.rate.hcr1))
+	  }
+
+	  if(input$hcr1.type == "FieldHockeyStickwFloor"){
+
+
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr1.type ,
+	                       hcr.settings = list(fieldwfloor.rp1=input$fieldwfloor.rp1.hcr1,
+	                                           fieldwfloor.rate=input$fieldwfloor.rate.hcr1,
+	                                           fieldwfloor.floor = input$fieldwfloor.floor.hcr1 ))
+
+	  }
+
+
+
+	  hcr.out <- hcr.out %>% select(Run,ER,Spn,Ct)
+
+	  return(hcr.out)
 
 	  }) # end HCR 1 calcs
 
@@ -346,8 +412,8 @@ library("gridExtra")
 	  hcr2.in <- comp.hcr2.calc()
 	  hcr2.in <- hcr2.in %>% arrange(Run)
 
-	  print("lty")
-	  print(input$hcr1.line.type)
+	  #print("lty")
+	  #print(input$hcr1.line.type)
 
     plot(hcr1.in$Run,hcr1.in$Spn,type="l",col= input$hcr1.line.col,lty=as.numeric(input$hcr1.line.type))
     lines(hcr2.in$Run,hcr2.in$Spn,type="l",col= input$hcr2.line.col,lty=as.numeric(input$hcr2.line.type))
