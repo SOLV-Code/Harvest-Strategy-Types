@@ -144,7 +144,7 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
 	headerPanel("Compare 2 HCR"),
 
 	sidebarPanel(
-	  selectizeInput("plot.type.comp", "Display Type", choices = c("Rate","Spawners","Catch","Table"), selected="Rate"),
+	  selectizeInput("plot.type.comp", "Display Type", choices = c("Rate","Spawners","Catch"), selected="Rate"),
 	  #shinyWidgets::autonumericInput(
 	 #  	    inputId = "plot.lim",label = "Plot Range",value = 300,decimalPlaces = 0, digitGroupSeparator = ","),
 	  numericInput("plot.lim.comp", "Plot Range",  value = 600 ,   width = "100%"),
@@ -165,35 +165,158 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
 
 	tabsetPanel(type = "tabs", id = "display.tab.comp",
         tabPanel("HCR 1", value = "HCR 1",
-			selectizeInput("hcr1.type", "Harvest Rule Type", choices = c("Fixed Rate","Fixed Spn"),
-			               selected="Fixed Rate"),
 
-			conditionalPanel(condition = "input['hcr1.type'] == 'Fixed Rate'",
+       textInput("hcr1.label","HCR 1 Label",value ="HCR 1"),
+      selectizeInput("hcr1.type", "Harvest Rule Type", choices = c("FixedRate",
+			   "FixedSpn","StepSpn","FixedCt","Step","SlopedER","IceHockeyStick","FieldHockeyStick",
+			   "FieldHockeyStickwFloor"),selected="FixedSpn"),
+
+			conditionalPanel(condition = "input['hcr1.type'] == 'FixedRate'",
 		                 numericInput("fixed.rate.hcr1", "Fixed Rate Target",  value = 50 , min = 0 , max = 100, step = 1)
                  ),
-			conditionalPanel(condition = "input['hcr1.type'] == 'Fixed Spn'",
-		                 numericInput("fixed.spn.hcr1", "Fixed Spawner Target",  value = 50 , min = 0 , max = 100, step = 1)
+			conditionalPanel(condition = "input['hcr1.type'] == 'FixedSpn'",
+		                 numericInput("fixed.spn.hcr1", "Fixed Spawner Target",  value = 70 , step = 1)
                  ),
+
+			conditionalPanel(condition = "input['hcr1.type'] == 'StepSpn'",
+			                 fluidRow(column(2,numericInput("stepspn1.rp.hcr1", "Step 1 Ref Pt",  value = 50 ,width = "100%")),
+			                          column(2,numericInput("stepspn2.rp.hcr1", "Step 2 Ref Pt",  value = 300 ,width = "100%"))
+			                 ),
+			                 fluidRow(column(2,numericInput("stepspn1.target.hcr1", "Step 1 Spn",  value = 50 ,width = "100%")),
+			                          column(2,numericInput("stepspn2.target.hcr1", "Step 2 Spn",  value = 150 ,width = "100%"))
+			                 )
+			),
+
+			conditionalPanel(condition = "input['hcr1.type'] == 'FixedCt'",
+			                 numericInput("fixed.ct.hcr1", "Fixed Catch Target",  value = 50 ,width = "20%")
+			),
+
+
+			conditionalPanel(condition = "input['hcr1.type'] == 'Step'",
+			                 fluidRow(column(2,numericInput("step1.rp.hcr1", "Step 1 Ref Pt",  value = 20 ,width = "100%")),
+			                          column(2,numericInput("step2.rp.hcr1", "Step 2 Ref Pt",  value = 50 ,width = "100%")),
+			                          column(2,numericInput("step3.rp.hcr1", "Step 3 Ref Pt",  value = 170 ,width = "100%"))
+			                 ),
+			                 fluidRow(column(2,numericInput("step1.rate.hcr1", "Step 1 Rate",  value = 30 ,width = "100%")),
+			                          column(2,numericInput("step2.rate.hcr1", "Step 2 Rate",  value = 50 ,width = "100%")),
+			                          column(2,numericInput("step3.rate.hcr1", "Step 3 Rate",  value = 70 ,width = "100%"))
+			                 )
+
+			),
+
+			conditionalPanel(condition = "input['hcr1.type'] == 'SlopedER'",
+			                 splitLayout(numericInput("slopeder.rp1.hcr1", "RP1",  value = 50 ,width = "100%"),
+			                             numericInput("slopeder.rp2.hcr1", "RP2",  value = 150 ,width = "100%"),
+			                             numericInput("slopeder.rp3.hcr1", "RP3",  value = 300 ,width = "100%"),
+			                             numericInput("slopeder.rp4.hcr1", "RP4",  value = 400 ,width = "100%"),
+			                             cellWidths = "10%"),
+			                 splitLayout(numericInput("slopeder.rate1.hcr1", "Rate1",  value = 0 ,width = "100%"),
+			                             numericInput("slopeder.rate2.hcr1", "Rate2",  value = 25 ,width = "100%"),
+			                             numericInput("slopeder.rate3.hcr1", "Rate3",  value = 30 ,width = "100%"),
+			                             numericInput("slopeder.rate4.hcr1", "Rate4",  value = 45 ,width = "100%"),
+			                             cellWidths = "10%")
+          ),
+			conditionalPanel(condition = "input['hcr1.type'] == 'IceHockeyStick'",
+			                 fluidRow(column(2,numericInput("ice.rp1.hcr1", "Lower Ref Pt",  value = 20 ,width = "100%")),
+			                          column(2,numericInput("ice.rp2.hcr1", "Upper Ref Pt",  value = 50 ,width = "100%")),
+			                          column(2,numericInput("ice.rate.hcr1", "Cap on Rate",  value = 50 ,width = "100%"))
+			                 )
+			),
+			conditionalPanel(condition = "input['hcr1.type'] == 'FieldHockeyStick'",
+			                 fluidRow(column(2,numericInput("field.rp1.hcr1", "Spn Target",  value = 50 ,width = "100%")),
+			                          column(2,numericInput("field.rate.hcr1", "Cap on Rate",  value = 65 ,width = "100%"))
+			                 )
+			),
+			conditionalPanel(condition = "input['hcr1.type'] == 'FieldHockeyStickwFloor'",
+			                 fluidRow(column(2,numericInput("fieldwfloor.rp1.hcr1", "Spn Target",  value = 50 ,width = "100%")),
+			                          column(2,numericInput("fieldwfloor.rate.hcr1", "Cap on Rate",  value = 65 ,width = "100%")),
+			                          column(2,numericInput("fieldwfloor.floor.hcr1", "Min ER",  value = 10 ,width = "100%"))
+			                 )
+			),
+
+
 			selectizeInput("hcr1.line.col", "Line Color", choices = c("darkblue","red","darkgrey"),
-			               selected="darkblue"),
+			               selected="darkgrey"),
 			selectizeInput("hcr1.line.type", "Line Type", choices = 1:4,
 			               selected=1)
 
 			) , # end HCR 1 tab panel
 
         tabPanel("HCR 2", value = "HCR 2",
- 			selectizeInput("hcr2.type", "Harvest Rule Type", choices = c("Fixed Rate","Fixed Spn"),
- 			               selected="Fixed Spn"),
 
-			conditionalPanel(condition = "input['hcr2.type'] == 'Fixed Rate'",
-		                 numericInput("fixed.rate.hcr2", "Fixed Rate Target",  value = 50 , min = 0 , max = 100, step = 1)
-                 ),
-			conditionalPanel(condition = "input['hcr2.type'] == 'Fixed Spn'",
-		                 numericInput("fixed.spn.hcr2", "Fixed Spawner Target",  value = 50 , min = 0 , max = 100, step = 1)
-                 )
-			,
+       textInput("hcr2.label","HCR 2 Label",value ="HCR 2"),
+
+
+       selectizeInput("hcr2.type", "Harvest Rule Type", choices = c("FixedRate",
+                                                                    "FixedSpn","StepSpn","FixedCt","Step","SlopedER","IceHockeyStick","FieldHockeyStick",
+                                                                    "FieldHockeyStickwFloor"),
+                      selected="FieldHockeyStickwFloor"),
+
+       conditionalPanel(condition = "input['hcr2.type'] == 'FixedRate'",
+                        numericInput("fixed.rate.hcr2", "Fixed Rate Target",  value = 50 , min = 0 , max = 100, step = 1)
+       ),
+       conditionalPanel(condition = "input['hcr2.type'] == 'FixedSpn'",
+                        numericInput("fixed.spn.hcr2", "Fixed Spawner Target",  value = 50 )
+       ),
+
+       conditionalPanel(condition = "input['hcr2.type'] == 'StepSpn'",
+                        fluidRow(column(2,numericInput("stepspn1.rp.hcr2", "Step 1 Ref Pt",  value = 50 ,width = "100%")),
+                                 column(2,numericInput("stepspn2.rp.hcr2", "Step 2 Ref Pt",  value = 300 ,width = "100%"))
+                        ),
+                        fluidRow(column(2,numericInput("stepspn1.target.hcr2", "Step 1 Spn",  value = 50 ,width = "100%")),
+                                 column(2,numericInput("stepspn2.target.hcr2", "Step 2 Spn",  value = 150 ,width = "100%"))
+                        )
+       ),
+
+       conditionalPanel(condition = "input['hcr2.type'] == 'FixedCt'",
+                        numericInput("fixed.ct.hcr2", "Fixed Catch Target",  value = 50 ,width = "20%")
+       ),
+
+
+       conditionalPanel(condition = "input['hcr2.type'] == 'Step'",
+                        fluidRow(column(2,numericInput("step1.rp.hcr2", "Step 1 Ref Pt",  value = 20 ,width = "100%")),
+                                 column(2,numericInput("step2.rp.hcr2", "Step 2 Ref Pt",  value = 50 ,width = "100%")),
+                                 column(2,numericInput("step3.rp.hcr2", "Step 3 Ref Pt",  value = 170 ,width = "100%"))
+                        ),
+                        fluidRow(column(2,numericInput("step1.rate.hcr2", "Step 1 Rate",  value = 30 ,width = "100%")),
+                                 column(2,numericInput("step2.rate.hcr2", "Step 2 Rate",  value = 50 ,width = "100%")),
+                                 column(2,numericInput("step3.rate.hcr2", "Step 3 Rate",  value = 70 ,width = "100%"))
+                        )
+
+       ),
+
+       conditionalPanel(condition = "input['hcr2.type'] == 'SlopedER'",
+                        splitLayout(numericInput("slopeder.rp1.hcr2", "RP1",  value = 50 ,width = "100%"),
+                                    numericInput("slopeder.rp2.hcr2", "RP2",  value = 150 ,width = "100%"),
+                                    numericInput("slopeder.rp3.hcr2", "RP3",  value = 300 ,width = "100%"),
+                                    numericInput("slopeder.rp4.hcr2", "RP4",  value = 400 ,width = "100%"),
+                                    cellWidths = "10%"),
+                        splitLayout(numericInput("slopeder.rate1.hcr2", "Rate1",  value = 0 ,width = "100%"),
+                                    numericInput("slopeder.rate2.hcr2", "Rate2",  value = 25 ,width = "100%"),
+                                    numericInput("slopeder.rate3.hcr2", "Rate3",  value = 30 ,width = "100%"),
+                                    numericInput("slopeder.rate4.hcr2", "Rate4",  value = 45 ,width = "100%"),
+                                    cellWidths = "10%")
+       ),
+       conditionalPanel(condition = "input['hcr2.type'] == 'IceHockeyStick'",
+                        fluidRow(column(2,numericInput("ice.rp1.hcr2", "Lower Ref Pt",  value = 20 ,width = "100%")),
+                                 column(2,numericInput("ice.rp2.hcr2", "Upper Ref Pt",  value = 50 ,width = "100%")),
+                                 column(2,numericInput("ice.rate.hcr2", "Cap on Rate",  value = 50 ,width = "100%"))
+                        )
+       ),
+       conditionalPanel(condition = "input['hcr2.type'] == 'FieldHockeyStick'",
+                        fluidRow(column(2,numericInput("field.rp1.hcr2", "Spn Target",  value = 50 ,width = "100%")),
+                                 column(2,numericInput("field.rate.hcr2", "Cap on Rate",  value = 65 ,width = "100%"))
+                        )
+       ),
+       conditionalPanel(condition = "input['hcr2.type'] == 'FieldHockeyStickwFloor'",
+                        fluidRow(column(2,numericInput("fieldwfloor.rp1.hcr2", "Spn Target",  value = 50 ,width = "100%")),
+                                 column(2,numericInput("fieldwfloor.rate.hcr2", "Cap on Rate",  value = 65 ,width = "100%")),
+                                 column(2,numericInput("fieldwfloor.floor.hcr2", "Min ER",  value = 10 ,width = "100%"))
+                        )
+       ),
+
 			selectizeInput("hcr2.line.col", "Line Color", choices = c("darkblue","red","darkgrey"),
-			               selected="red"),
+			               selected="darkblue"),
 			selectizeInput("hcr2.line.type", "Line Type", choices = 1:4,
 			               selected=2)
                  ),

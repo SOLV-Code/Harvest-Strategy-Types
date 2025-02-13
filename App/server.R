@@ -80,138 +80,57 @@ library("gridExtra")
 
 
 	  if(input$display.tab == "Step"){
-
-
-	    step0.idx <- run.vec < input$step1.rp
-	    step1.idx <- run.vec >= input$step1.rp & run.vec < input$step2.rp
-      step2.idx <- run.vec >= input$step2.rp & run.vec < input$step3.rp
-      step3.idx <- run.vec >= input$step3.rp
-
-      hcr.out <- data.frame(Run = run.vec ,ER = NA)
-      hcr.out$ER[step0.idx] <- 0
-      hcr.out$ER[step1.idx] <- input$step1.rate
-      hcr.out$ER[step2.idx] <- input$step2.rate
-      hcr.out$ER[step3.idx] <- input$step3.rate
-
-      hcr.out$Spn <- hcr.out$Run * (1-hcr.out$ER/100)
-      hcr.out$Ct <- hcr.out$Run * hcr.out$ER/100
-
-	    #print(hcr.out)
-
-	  }
+        hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$display.tab ,
+	                       hcr.settings = list(step1.rp=input$step1.rp,
+	                                           step2.rp=input$step2.rp,
+	                                           step3.rp=input$step3.rp,
+	                                           step1.rate=input$step1.rate,
+	                                           step2.rate=input$step2.rate,
+	                                           step3.rate=input$step3.rate
+	                                           ))
+  	  }
 
 
 	  if(input$display.tab == "SlopedER"){
 
-	    # 4 ref points, each have run size and corresponding ER
-	    # this results in 5 zones:
-	    # Zone 0: Run is 0 to RP1 -> ER = 0
-	    # Zone 1: RP1 < Run <= RP2  -> slope and intercept based on points 1 and 2
-	    # Zone 2: RP2 < Run <= RP3  -> slope and intercept based on points 2 and 3
-	    # Zone 3: RP3 < Run <= RP4  -> slope and intercept based on points 3 and 4
-	    # Zone 4: Run larger than RP4 -> ER = ER4
-
-	    zone0.idx <- run.vec < input$slopeder.rp1
-	    zone1.idx <- run.vec >= input$slopeder.rp1 & run.vec < input$slopeder.rp2
-	    zone2.idx <- run.vec >= input$slopeder.rp2 & run.vec < input$slopeder.rp3
-	    zone3.idx <- run.vec >= input$slopeder.rp3 & run.vec < input$slopeder.rp4
-	    zone4.idx <- run.vec >= input$slopeder.rp4
-
-	    # line fit for Zone 1
-	    line1.pts <- data.frame(Run = c(input$slopeder.rp1,input$slopeder.rp2),
-	                            ER = c(input$slopeder.rate1,input$slopeder.rate2))
-	    line1.fit <- lm(ER ~ Run, data = line1.pts)
-      # lines 2,3
-	    line2.pts <- data.frame(Run = c(input$slopeder.rp2,input$slopeder.rp3),
-	                            ER = c(input$slopeder.rate2,input$slopeder.rate3))
-	    line2.fit <- lm(ER ~ Run, data = line2.pts)
-	    line3.pts <- data.frame(Run = c(input$slopeder.rp3,input$slopeder.rp4),
-	                            ER = c(input$slopeder.rate3,input$slopeder.rate4))
-	    line3.fit <- lm(ER ~ Run, data = line3.pts)
-
-
-
-	    hcr.out <- data.frame(Run = run.vec ,ER = NA)
-	    hcr.out$ER[zone0.idx] <- 0
-	    hcr.out$ER[zone1.idx] <- predict(line1.fit,newdata=hcr.out[zone1.idx,])
-	    hcr.out$ER[zone2.idx] <- predict(line2.fit,newdata=hcr.out[zone2.idx,])
-	    hcr.out$ER[zone3.idx] <- predict(line3.fit,newdata=hcr.out[zone3.idx,])
-	    hcr.out$ER[zone4.idx] <- input$slopeder.rate4
-
-	    hcr.out$Spn <- hcr.out$Run * (1-hcr.out$ER/100)
-	    hcr.out$Ct <- hcr.out$Run * hcr.out$ER/100
-
-	    #print(hcr.out)
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$display.tab ,
+	                       hcr.settings = list(slopeder.rp1=input$slopeder.rp1,
+	                                           slopeder.rp2=input$slopeder.rp2,
+	                                           slopeder.rp3=input$slopeder.rp3,
+	                                           slopeder.rp4 = input$slopeder.rp4,
+	                                           slopeder.rate1=input$slopeder.rate1,
+	                                           slopeder.rate2=input$slopeder.rate2,
+	                                           slopeder.rate3=input$slopeder.rate3,
+	                                           slopeder.rate4 =input$slopeder.rate4
+	                       ))
 
 	  }
 
 
-
-
-
-
-
 	  if(input$display.tab == "IceHockeyStick"){
 
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$display.tab ,
+	                       hcr.settings = list(ice.rp1=input$ice.rp1,
+	                                           ice.rp2=input$ice.rp2,
+	                                           ice.rate=input$ice.rate))
 
-	    low.idx <- run.vec <= input$ice.rp1
-	    high.idx <- run.vec >= input$ice.rp2
-	    mid.idx <- !low.idx & ! high.idx
-
-	    ice.slope <-  input$ice.rate / (input$ice.rp2 - input$ice.rp1)
-
-	    hcr.out <- data.frame(Run = run.vec ,ER = NA)
-
-	    hcr.out$ER[low.idx] <- 0
-	    hcr.out$ER[high.idx] <- input$ice.rate
-	    hcr.out$ER[mid.idx] <- (run.vec[mid.idx] -  input$ice.rp1) * ice.slope
-
-	    hcr.out$Spn <- hcr.out$Run * (1-hcr.out$ER/100)
-	    hcr.out$Ct <- hcr.out$Run * hcr.out$ER/100
-
-	    #print(hcr.out)
 
 	  }
 
 	  if(input$display.tab == "FieldHockeyStick"){
 
-	    hcr.out <- data.frame(Run = run.vec ,ER = NA)
-
-	    # calc abd above spn target
-	    abd.above.spn <- 	 hcr.out$Run  - input$field.rp1
-	    abd.above.spn[abd.above.spn<0] <- 0
-
-	    # calc potential rate (bounded by cap)
-	    hcr.out$ER <- round(abd.above.spn/hcr.out$Run,5)*100
-	    hcr.out$ER <- pmin(hcr.out$ER,input$field.rate)
-
-
-	    hcr.out$Spn  <- hcr.out$Run  * (1-hcr.out$ER/100)
-	    hcr.out$Ct <- hcr.out$Run  * (hcr.out$ER/100)
-
-
-	    #print(hcr.out)
-
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$display.tab ,
+	                       hcr.settings = list(field.rp1=input$field.rp1,
+	                                           field.rate=input$field.rate))
 	  }
 
 	  if(input$display.tab == "FieldHockeyStickwFloor"){
 
-      hcr.out <- data.frame(Run = run.vec ,ER = NA)
 
-      # calc abd above spn target
-      abd.above.spn <- 	 hcr.out$Run  - input$fieldwfloor.rp1
-      abd.above.spn[abd.above.spn<0] <- 0
-
-      # calc potential rate (bounded by cap)
-      hcr.out$ER <- round(abd.above.spn/hcr.out$Run,5)*100
-      hcr.out$ER <- pmin(hcr.out$ER,input$fieldwfloor.rate)
-      hcr.out$ER <- pmax(hcr.out$ER,input$fieldwfloor.floor)
-
-	    hcr.out$Spn  <- hcr.out$Run  * (1-hcr.out$ER/100)
-	    hcr.out$Ct <- hcr.out$Run  * (hcr.out$ER/100)
-
-
-	    #print(hcr.out)
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$display.tab ,
+	                       hcr.settings = list(fieldwfloor.rp1=input$fieldwfloor.rp1,
+	                                           fieldwfloor.rate=input$fieldwfloor.rate,
+	                                           fieldwfloor.floor = input$fieldwfloor.floor ))
 
 	  }
 
@@ -275,8 +194,8 @@ library("gridExtra")
         }
 
 
-        axis(1, cex.axis=1.5,col.axis = "darkblue")
-        axis(2, cex.axis=1.5,col.axis = "darkblue",las=2)
+        axis(1, cex.axis=1.5,col.axis = "darkblue",col= "darkblue")
+        axis(2, cex.axis=1.5,col.axis = "darkblue",col= "darkblue",las=2)
 
 
 
@@ -357,26 +276,89 @@ library("gridExtra")
 	  )
 
 
-	  if(input$hcr1.type == "Fixed Rate"){
 
-	    hcr.out <- data.frame(Run = run.vec ,ER = rep(input$fixed.rate.hcr1,length(run.vec)))
-	    hcr.out$Spn <- hcr.out$Run * (1-hcr.out$ER/100)
-	    hcr.out$Ct <- hcr.out$Run * hcr.out$ER/100
+	  if(input$hcr1.type == "FixedRate"){
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr1.type ,
+	                       hcr.settings = list(fixed.rate = input$fixed.rate.hcr1))
+	  }
+	  if(input$hcr1.type == "FixedSpn"){
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr1.type ,
+	                       hcr.settings = list(fixed.spn = input$fixed.spn.hcr1))
 	  }
 
-	  if(input$hcr1.type == "Fixed Spn"){
+	  if(input$hcr1.type == "StepSpn"){
 
-	    hcr.out <- data.frame(Run = run.vec ,Spn = rep(input$fixed.spn.hcr1,length(run.vec)))
-	    below.idx <- (hcr.out$Run - hcr.out$Spn) <0
-	    hcr.out$Spn[below.idx] <- hcr.out$Run[below.idx]
-	    hcr.out$Ct <- hcr.out$Run - hcr.out$Spn
-	    hcr.out$Ct[hcr.out$Ct<0] <- 0
-	    hcr.out$ER <- round(hcr.out$Ct /  hcr.out$Run *100)
-	    hcr.out$ER[is.na(hcr.out$ER)] <- 0
-	  	  }
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr1.type ,
+	                       hcr.settings = list(stepspn1.rp=input$stepspn1.rp.hcr1,
+	                                           stepspn2.rp=input$stepspn2.rp.hcr1,
+	                                           stepspn1.target=input$stepspn1.target.hcr1,
+	                                           stepspn2.target=input$stepspn2.target.hcr1))
+	  }
 
-	  print("hcr1")
-	  print(hcr.out)
+
+	  if(input$hcr1.type == "FixedCt"){
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr1.type ,
+	                       hcr.settings = list(fixed.ct= input$fixed.ct.hcr1))
+	  }
+
+
+	  if(input$hcr1.type == "Step"){
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr1.type ,
+	                       hcr.settings = list(step1.rp=input$step1.rp.hcr1,
+	                                           step2.rp=input$step2.rp.hcr1,
+	                                           step3.rp=input$step3.rp.hcr1,
+	                                           step1.rate=input$step1.rate.hcr1,
+	                                           step2.rate=input$step2.rate.hcr1,
+	                                           step3.rate=input$step3.rate.hcr1
+	                       ))
+	  }
+
+
+	  if(input$hcr1.type == "SlopedER"){
+
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr1.type ,
+	                       hcr.settings = list(slopeder.rp1=input$slopeder.rp1.hcr1,
+	                                           slopeder.rp2=input$slopeder.rp2.hcr1,
+	                                           slopeder.rp3=input$slopeder.rp3.hcr1,
+	                                           slopeder.rp4 = input$slopeder.rp4.hcr1,
+	                                           slopeder.rate1=input$slopeder.rate1.hcr1,
+	                                           slopeder.rate2=input$slopeder.rate2.hcr1,
+	                                           slopeder.rate3=input$slopeder.rate3.hcr1,
+	                                           slopeder.rate4 =input$slopeder.rate4.hcr1
+	                       ))
+
+	  }
+
+
+	  if(input$hcr1.type == "IceHockeyStick"){
+
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr1.type ,
+	                       hcr.settings = list(ice.rp1=input$ice.rp1.hcr1,
+	                                           ice.rp2=input$ice.rp2.hcr1,
+	                                           ice.rate=input$ice.rate.hcr1))
+
+
+	  }
+
+	  if(input$hcr1.type == "FieldHockeyStick"){
+
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr1.type ,
+	                       hcr.settings = list(field.rp1=input$field.rp1.hcr1,
+	                                           field.rate=input$field.rate.hcr1))
+	  }
+
+	  if(input$hcr1.type == "FieldHockeyStickwFloor"){
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr1.type ,
+	                       hcr.settings = list(fieldwfloor.rp1=input$fieldwfloor.rp1.hcr1,
+	                                           fieldwfloor.rate=input$fieldwfloor.rate.hcr1,
+	                                           fieldwfloor.floor = input$fieldwfloor.floor.hcr1 ))
+ }
+
+
+
+	  hcr.out <- hcr.out %>% select(Run,ER,Spn,Ct)
+
+	  return(hcr.out)
 
 	  }) # end HCR 1 calcs
 
@@ -391,47 +373,206 @@ library("gridExtra")
 	  )
 
 
-	  if(input$hcr2.type == "Fixed Rate"){
 
-	    hcr.out <- data.frame(Run = run.vec ,ER = rep(input$fixed.rate.hcr2,length(run.vec)))
-	    hcr.out$Spn <- hcr.out$Run * (1-hcr.out$ER/100)
-	    hcr.out$Ct <- hcr.out$Run * hcr.out$ER/100
+	  if(input$hcr2.type == "FixedRate"){
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr2.type ,
+	                       hcr.settings = list(fixed.rate = input$fixed.rate.hcr2))
+	  }
+	  if(input$hcr2.type == "FixedSpn"){
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr2.type ,
+	                       hcr.settings = list(fixed.spn = input$fixed.spn.hcr2))
 	  }
 
-	  if(input$hcr2.type == "Fixed Spn"){
+	  if(input$hcr2.type == "StepSpn"){
 
-	    hcr.out <- data.frame(Run = run.vec ,Spn = rep(input$fixed.spn.hcr2,length(run.vec)))
-	    below.idx <- (hcr.out$Run - hcr.out$Spn) <0
-	    hcr.out$Spn[below.idx] <- hcr.out$Run[below.idx]
-	    hcr.out$Ct <- hcr.out$Run - hcr.out$Spn
-	    hcr.out$Ct[hcr.out$Ct<0] <- 0
-	    hcr.out$ER <- round(hcr.out$Ct /  hcr.out$Run *100)
-	    hcr.out$ER[is.na(hcr.out$ER)] <- 0
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr2.type ,
+	                       hcr.settings = list(stepspn1.rp=input$stepspn1.rp.hcr2,
+	                                           stepspn2.rp=input$stepspn2.rp.hcr2,
+	                                           stepspn1.target=input$stepspn1.target.hcr2,
+	                                           stepspn2.target=input$stepspn2.target.hcr2))
 	  }
 
-	  print("hcr2")
-	  print(hcr.out)
+
+	  if(input$hcr2.type == "FixedCt"){
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr2.type ,
+	                       hcr.settings = list(fixed.ct= input$fixed.ct.hcr2))
+	  }
+
+
+	  if(input$hcr2.type == "Step"){
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr2.type ,
+	                       hcr.settings = list(step1.rp=input$step1.rp.hcr2,
+	                                           step2.rp=input$step2.rp.hcr2,
+	                                           step3.rp=input$step3.rp.hcr2,
+	                                           step1.rate=input$step1.rate.hcr2,
+	                                           step2.rate=input$step2.rate.hcr2,
+	                                           step3.rate=input$step3.rate.hcr2
+	                       ))
+	  }
+
+
+	  if(input$hcr2.type == "SlopedER"){
+
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr2.type ,
+	                       hcr.settings = list(slopeder.rp1=input$slopeder.rp1.hcr2,
+	                                           slopeder.rp2=input$slopeder.rp2.hcr2,
+	                                           slopeder.rp3=input$slopeder.rp3.hcr2,
+	                                           slopeder.rp4 = input$slopeder.rp4.hcr2,
+	                                           slopeder.rate1=input$slopeder.rate1.hcr2,
+	                                           slopeder.rate2=input$slopeder.rate2.hcr2,
+	                                           slopeder.rate3=input$slopeder.rate3.hcr2,
+	                                           slopeder.rate4 =input$slopeder.rate4.hcr2
+	                       ))
+
+	  }
+
+
+	  if(input$hcr2.type == "IceHockeyStick"){
+
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr2.type ,
+	                       hcr.settings = list(ice.rp1=input$ice.rp1.hcr2,
+	                                           ice.rp2=input$ice.rp2.hcr2,
+	                                           ice.rate=input$ice.rate.hcr2))
+
+
+	  }
+
+	  if(input$hcr2.type == "FieldHockeyStick"){
+
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr2.type ,
+	                       hcr.settings = list(field.rp1=input$field.rp1.hcr2,
+	                                           field.rate=input$field.rate.hcr2))
+	  }
+
+	  if(input$hcr2.type == "FieldHockeyStickwFloor"){
+	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr2.type ,
+	                       hcr.settings = list(fieldwfloor.rp1=input$fieldwfloor.rp1.hcr2,
+	                                           fieldwfloor.rate=input$fieldwfloor.rate.hcr2,
+	                                           fieldwfloor.floor = input$fieldwfloor.floor.hcr2 ))
+	  }
+
+
+
+	  hcr.out <- hcr.out %>% select(Run,ER,Spn,Ct)
+
+	  return(hcr.out)
 
 
 	}) # end HCR 2 calcs
 
 
 
-
-
 	output$plotComp <- renderPlot({
 
 	  hcr1.in <- comp.hcr1.calc()
+	  plot.sub.1 <-  hcr1.in[1:3,] %>% as.data.frame()
 	  hcr1.in <- hcr1.in %>% arrange(Run)
 
 	  hcr2.in <- comp.hcr2.calc()
+	  plot.sub.2 <-  hcr2.in[1:3,] %>% as.data.frame()
 	  hcr2.in <- hcr2.in %>% arrange(Run)
 
-	  print("lty")
-	  print(input$hcr1.line.type)
+	  #print("lty")
+	  #print(input$hcr1.line.type)
 
-    plot(hcr1.in$Run,hcr1.in$Spn,type="l",col= input$hcr1.line.col,lty=as.numeric(input$hcr1.line.type))
-    lines(hcr2.in$Run,hcr2.in$Spn,type="l",col= input$hcr2.line.col,lty=as.numeric(input$hcr2.line.type))
+
+    if(input$plot.type.comp == "Rate"){
+      y.label <- paste(input$rate.type.comp,"(%)")
+      plot(hcr1.in$Run,hcr1.in$ER,type="l",bty="n",axes=FALSE,lwd = 5,col=input$hcr1.line.col,
+           lty=as.numeric(input$hcr1.line.type),
+           xlab = paste(input$run.label.comp,input$units.use.comp), ylab =y.label,ylim = c(0,100),
+           cex.lab= 1.5,col.lab="darkblue")
+      lines(hcr2.in$Run,hcr2.in$ER,type="l",lwd = 5,col=input$hcr2.line.col,
+           lty=as.numeric(input$hcr2.line.type) )
+
+    }
+
+
+    if(input$plot.type.comp  == "Spawners"){
+      y.label <- paste("Spawner Target",input$units.use.comp)
+      plot(hcr1.in$Run,hcr1.in$Spn,type="l",bty="n",axes=FALSE,lwd = 5,col=input$hcr1.line.col,
+           lty=as.numeric(input$hcr1.line.type),
+           xlab = paste(input$run.label.comp,input$units.use.comp), ylab =y.label, ylim = c(0,input$plot.lim.comp),
+           cex.lab= 1.5,col.lab="darkblue")
+      lines(hcr2.in$Run,hcr2.in$Spn,type="l",bty="n",axes=FALSE,lwd = 5,col=input$hcr2.line.col,
+             lty=as.numeric(input$hcr2.line.type) )
+
+    }
+
+    if(input$plot.type.comp  == "Catch"){
+      y.label <- paste("Catch Target",input$units.use.comp)
+      plot(hcr1.in$Run,hcr1.in$Ct,type="l",bty="n",axes=FALSE,lwd = 5,col=input$hcr1.line.col,
+           lty=as.numeric(input$hcr1.line.type),
+           xlab = paste(input$run.label.comp,input$units.use.comp), ylab =y.label,
+           ylim = c(0,input$plot.lim.comp),
+           cex.lab= 1.5,col.lab="darkblue")
+      lines(hcr2.in$Run,hcr2.in$Ct,type="l",bty="n",axes=FALSE,lwd = 5,col=input$hcr2.line.col,
+           lty=as.numeric(input$hcr2.line.type))
+    }
+
+
+    axis(1, cex.axis=1.5,col.axis = "darkblue",col= "darkblue")
+    axis(2, cex.axis=1.5,col.axis = "darkblue",col= "darkblue",las=2)
+
+    # 3 lines version (lines are same for both HCR, only plot 1)
+    abline(v = plot.sub.1$Run[1],col = "red", lwd=3)
+    abline(v = plot.sub.1$Run[2] ,col = "red", lwd=3,lty=2)
+    abline(v = plot.sub.1$Run[3] ,col = "red", lwd=3,lty=2)
+
+
+    if(input$plot.type.comp == "Rate"){var.pt <- "ER"}
+    if(input$plot.type.comp == "Spawners"){var.pt <- "Spn"}
+    if(input$plot.type.comp == "Catch"){var.pt <- "Ct"}
+
+    # ref lines
+   segments(par("usr")[1],plot.sub.1[1,var.pt],plot.sub.1$Run[1],plot.sub.1[1,var.pt],col="orange",lwd=2)
+  segments(par("usr")[1],plot.sub.1[2,var.pt],plot.sub.1$Run[2],plot.sub.1[2,var.pt],col="orange",lwd=2,lty=2)
+   segments(par("usr")[1],plot.sub.1[3,var.pt],plot.sub.1$Run[3],plot.sub.1[3,var.pt],col="orange",lwd=2, lty=2)
+
+    segments(par("usr")[1],plot.sub.2[1,var.pt],plot.sub.2$Run[1],plot.sub.2[1,var.pt],col="red",lwd=2)
+    segments(par("usr")[1],plot.sub.2[2,var.pt],plot.sub.2$Run[2],plot.sub.2[2,var.pt],col="red",lwd=2,lty=2)
+    segments(par("usr")[1],plot.sub.2[3,var.pt],plot.sub.2$Run[3],plot.sub.2[3,var.pt],col="red",lwd=2, lty=2)
+
+
+    if(input$plot.type.comp == "Rate"){
+      lines(hcr1.in$Run,hcr1.in$ER,type="l",bty="n",lwd = 5,col=input$hcr1.line.col,
+                                        lty=as.numeric(input$hcr1.line.type))
+       lines(hcr2.in$Run,hcr2.in$ER,type="l",bty="n",lwd = 5,col=input$hcr2.line.col,
+                 lty=as.numeric(input$hcr2.line.type))
+
+                                        }
+    if(input$plot.type.comp == "Spawners"){
+      lines(hcr1.in$Run,hcr1.in$Spn,type="l",bty="n",lwd = 5,col=input$hcr1.line.col,
+                                            lty=as.numeric(input$hcr1.line.type))
+      lines(hcr2.in$Run,hcr2.in$Spn,type="l",bty="n",lwd = 5,col=input$hcr2.line.col,
+            lty=as.numeric(input$hcr2.line.type))
+            }
+    if(input$plot.type.comp == "Catch"){
+      lines(hcr1.in$Run,hcr1.in$Ct,type="l",bty="n",lwd = 5,col=input$hcr1.line.col,
+                                         lty=as.numeric(input$hcr1.line.type))
+           lines(hcr2.in$Run,hcr2.in$Ct,type="l",bty="n",lwd = 5,col=input$hcr2.line.col,
+                lty=as.numeric(input$hcr2.line.type))
+            }
+
+
+    # ref points
+    points(plot.sub.1$Run[1],plot.sub.1[1,var.pt],pch=21,col="orange",cex=2,lwd=3,bg="bisque")
+    points(plot.sub.1$Run[2],plot.sub.1[2,var.pt],pch=21,col="orange",cex=2,lwd=3,bg="white")
+    points(plot.sub.1$Run[3],plot.sub.1[3,var.pt],pch=21,col="orange",cex=2,lwd=3,bg="white")
+
+   points(plot.sub.2$Run[1],plot.sub.2[1,var.pt],pch=21,col="red",cex=2,lwd=3,bg="firebrick1")
+  points(plot.sub.2$Run[2],plot.sub.2[2,var.pt],pch=21,col="red",cex=2,lwd=3,bg="white")
+  points(plot.sub.2$Run[3],plot.sub.2[3,var.pt],pch=21,col="red",cex=2,lwd=3,bg="white")
+
+    title(main = input$plot.type.comp,col.main="darkblue",font.main=2,cex.main=2)
+
+
+
+    legend(0,par("usr")[4]*1.12,legend = c(input$hcr1.label,input$hcr2.label),
+           col=c(input$hcr1.line.col,input$hcr2.line.col),text.col="darkblue",
+           lty = as.numeric(c(input$hcr1.line.type,input$hcr2.line.type)),
+           lwd=3,bg="white",box.col="white",
+           bty="o",cex = 1.5,xpd=NA)
 
 
 	})
