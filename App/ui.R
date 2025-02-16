@@ -122,8 +122,12 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
                  fluidRow(column(2,numericInput("fieldwfloor.rp1", "Spn Target",  value = 50 ,width = "100%")),
                           column(2,numericInput("fieldwfloor.rate", "Cap on Rate",  value = 65 ,width = "100%")),
                           column(2,numericInput("fieldwfloor.floor", "Min ER",  value = 10 ,width = "100%")),
-                          column(3,selectizeInput("floor.type", "Floor Type",
-                                                  choices = c("Fixed","Declining"), selected="Fixed"))
+                          #column(3,selectizeInput("floor.type", "Floor Type",
+                          #                        choices = c("Fixed","Declining"), selected="Fixed"))
+                          column(4,radioButtons("floor.type", "Floor Type",
+                                                c("Fixed" = "Fixed", "Declining" = "Declining"), inline=T) )
+
+
                  )# end fluid row
         ) # end tabpanel
 		 ) # end tabset panel
@@ -238,7 +242,9 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
 			                          column(2,numericInput("fieldwfloor.rate.hcr1", "Cap on Rate",  value = 65 ,width = "100%")),
 			                          column(2,numericInput("fieldwfloor.floor.hcr1", "Min ER",  value = 10 ,width = "100%"))
 			                          			                 ),
-			                 selectizeInput("floor.type.hcr1", "Floor Type", choices = c("Fixed","Declining"), selected="Fixed")
+			                 radioButtons("floor.type.hcr1", "Floor Type",
+			                              c("Fixed" = "Fixed", "Declining" = "Declining"), inline=T)
+			                 #selectizeInput("floor.type.hcr1", "Floor Type", choices = c("Fixed","Declining"), selected="Fixed")
 			),
 
 
@@ -321,7 +327,9 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
                                  column(2,numericInput("fieldwfloor.floor.hcr2", "Min ER",  value = 10 ,width = "100%")),
 
                         ),
-                        selectizeInput("floor.type.hcr2", "Floor Type", choices = c("Fixed","Declining"), selected="Fixed")
+                        radioButtons("floor.type.hcr2", "Floor Type",
+                                     c("Fixed" = "Fixed", "Declining" = "Declining"), inline=T)
+                        #selectizeInput("floor.type.hcr2", "Floor Type", choices = c("Fixed","Declining"), selected="Fixed")
        ),
 
 			selectizeInput("hcr2.line.col", "Line Color", choices = c("darkblue","red","darkgrey"),

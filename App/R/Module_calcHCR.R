@@ -190,9 +190,10 @@ if(hcr.type == "FieldHockeyStickwFloor"){
 
 	switch.pt <- hcr.settings$fieldwfloor.rp1*(1/(1-hcr.settings$fieldwfloor.floor/100))
 	floor.zone.idx <- run.vec <= switch.pt  
+	print(switch.pt)
 
   # line fit for floor zone
-  floor.pts <- data.frame(Run = c(0,hcr.settings$fieldwfloor.rp1),
+  floor.pts <- data.frame(Run = c(0,switch.pt),
                           ER = c(0,hcr.settings$fieldwfloor.floor))
   floor.fit <- lm(ER ~ Run, data = floor.pts)
   hcr.out$ER[floor.zone.idx] <- predict(floor.fit,newdata=hcr.out[floor.zone.idx,])
@@ -205,7 +206,7 @@ if(hcr.type == "FieldHockeyStickwFloor"){
   hcr.out$Ct <- hcr.out$Run  * (hcr.out$ER/100)
 
 
-  print(hcr.out)
+  #print(hcr.out)
 
 }
 

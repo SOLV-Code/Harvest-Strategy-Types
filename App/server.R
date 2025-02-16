@@ -48,7 +48,7 @@ library("gridExtra")
 	  run.vec <- c(input$run.med,
 	                    max(c(0,input$run.med * (1 - input$run.lower/100))) ,
 	                    input$run.med * (1 + input$run.upper/100),
-	                    seq(0,input$plot.lim,length.out = 97)
+	                    seq(0,input$plot.lim,length.out = 197)
 	                   )
 
 
@@ -249,7 +249,7 @@ library("gridExtra")
 				  table.in <- hcr.in[1:3,] %>% as.data.frame() %>% arrange(Run) %>% round()
 				  table.in <- t(table.in) %>% as.data.frame()
 				  names(table.in) <- c("Lower","Mid","Upper")
-				  print(table.in)
+				  #print(table.in)
 
 
 				  tt <- ttheme_default(base_size=34)
@@ -273,7 +273,7 @@ library("gridExtra")
 	  run.vec <- c(input$run.med.comp,
 	               max(c(0,input$run.med.comp * (1 - input$run.lower.comp/100))) ,
 	               input$run.med.comp * (1 + input$run.upper.comp/100),
-	               seq(0,input$plot.lim.comp,length.out = 97)
+	               seq(0,input$plot.lim.comp,length.out = 197)
 	  )
 
 
@@ -371,7 +371,7 @@ library("gridExtra")
 	  run.vec <- c(input$run.med.comp,
 	               max(c(0,input$run.med.comp * (1 - input$run.lower.comp/100))) ,
 	               input$run.med.comp * (1 + input$run.upper.comp/100),
-	               seq(0,input$plot.lim.comp,length.out = 97)
+	               seq(0,input$plot.lim.comp,length.out = 197)
 	  )
 
 
@@ -606,14 +606,14 @@ library("gridExtra")
 	      mutate(HCR = input$hcr2.label) %>% select(HCR, everything())
 	    #print(table2.in)
 
-	    print(table1.in[-1,3:5])
-	    print(table2.in[-1,3:5])
+	   # print(table1.in[-1,3:5])
+	   # print(table2.in[-1,3:5])
 
 	    diff.src <- as.data.frame(table2.in[-1,3:5]) - as.data.frame(table1.in[-1,3:5])
 
 	    diff.table <- diff.src %>%
 	      as.data.frame() %>% mutate(HCR = "Diff",Variable =  table1.in[-1,"Variable"])
-print(diff.table)
+      #print(diff.table)
 
 	    table.in <- bind_rows(table1.in,table2.in[-1,],diff.table)
 	    names(table.in) <- c("HCR","Variable","Lower","Mid","Upper")
