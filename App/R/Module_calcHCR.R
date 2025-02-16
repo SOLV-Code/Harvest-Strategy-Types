@@ -173,14 +173,34 @@ if(hcr.type == "FieldHockeyStickwFloor"){
 
   # calc abd above spn target
   abd.above.spn <- 	 hcr.out$Run  - hcr.settings$fieldwfloor.rp1
+
   abd.above.spn[abd.above.spn<=0] <- 0
+
 
   # calc potential rate (then bound by cap, floor)
   hcr.out$ER <- round(abd.above.spn/hcr.out$Run,5)*100
   hcr.out$ER[abd.above.spn<=0] <- 0
   hcr.out$ER <- pmin(hcr.out$ER,hcr.settings$fieldwfloor.rate)
-  hcr.out$ER <- pmax(hcr.out$ER,hcr.settings$fieldwfloor.floor)
+  
+  if(hcr.settings$floor.type == "Fixed"){
+		hcr.out$ER <- pmax(hcr.out$ER,hcr.settings$fieldwfloor.floor)
+	}
 
+  if(hcr.settings$floor.type == "Declining"){
+
+	switch.pt <- hcr.settings$fieldwfloor.rp1*(1/(1-hcr.settings$fieldwfloor.floor/100))
+	floor.zone.idx <- run.vec <= switch.pt  
+	print(switch.pt)
+
+  # line fit for floor zone
+  floor.pts <- data.frame(Run = c(0,switch.pt),
+                          ER = c(0,hcr.settings$fieldwfloor.floor))
+  floor.fit <- lm(ER ~ Run, data = floor.pts)
+  hcr.out$ER[floor.zone.idx] <- predict(floor.fit,newdata=hcr.out[floor.zone.idx,])
+	}
+
+
+  
 
   hcr.out$Spn  <- hcr.out$Run  * (1-hcr.out$ER/100)
   hcr.out$Ct <- hcr.out$Run  * (hcr.out$ER/100)

@@ -119,9 +119,15 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
         ), # end tabpanel
         tabPanel("Field Hockey Stick with ER Floor", value = "FieldHockeyStickwFloor",
                  fluidRow(column(12,plotOutput("plot8",width = "100%", height = "600px"))),
-                 fluidRow(column(3,numericInput("fieldwfloor.rp1", "Spn Target",  value = 50 ,width = "100%")),
-                          column(3,numericInput("fieldwfloor.rate", "Cap on Rate",  value = 65 ,width = "100%")),
-                          column(3,numericInput("fieldwfloor.floor", "Min ER",  value = 10 ,width = "100%"))
+                 fluidRow(column(2,numericInput("fieldwfloor.rp1", "Spn Target",  value = 50 ,width = "100%")),
+                          column(2,numericInput("fieldwfloor.rate", "Cap on Rate",  value = 65 ,width = "100%")),
+                          column(2,numericInput("fieldwfloor.floor", "Min ER",  value = 10 ,width = "100%")),
+                          #column(3,selectizeInput("floor.type", "Floor Type",
+                          #                        choices = c("Fixed","Declining"), selected="Fixed"))
+                          column(4,radioButtons("floor.type", "Floor Type",
+                                                c("Fixed" = "Fixed", "Declining" = "Declining"), inline=T) )
+
+
                  )# end fluid row
         ) # end tabpanel
 		 ) # end tabset panel
@@ -144,7 +150,7 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
 	headerPanel("Compare 2 HCR"),
 
 	sidebarPanel(
-	  selectizeInput("plot.type.comp", "Display Type", choices = c("Rate","Spawners","Catch"), selected="Rate"),
+	  selectizeInput("plot.type.comp", "Display Type", choices = c("Rate","Spawners","Catch","Table"), selected="Rate"),
 	  #shinyWidgets::autonumericInput(
 	 #  	    inputId = "plot.lim",label = "Plot Range",value = 300,decimalPlaces = 0, digitGroupSeparator = ","),
 	  numericInput("plot.lim.comp", "Plot Range",  value = 600 ,   width = "100%"),
@@ -235,7 +241,10 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
 			                 fluidRow(column(2,numericInput("fieldwfloor.rp1.hcr1", "Spn Target",  value = 50 ,width = "100%")),
 			                          column(2,numericInput("fieldwfloor.rate.hcr1", "Cap on Rate",  value = 65 ,width = "100%")),
 			                          column(2,numericInput("fieldwfloor.floor.hcr1", "Min ER",  value = 10 ,width = "100%"))
-			                 )
+			                          			                 ),
+			                 radioButtons("floor.type.hcr1", "Floor Type",
+			                              c("Fixed" = "Fixed", "Declining" = "Declining"), inline=T)
+			                 #selectizeInput("floor.type.hcr1", "Floor Type", choices = c("Fixed","Declining"), selected="Fixed")
 			),
 
 
@@ -315,8 +324,12 @@ navbarPage("Harvest Strategy Types", id = "MainTab",
        conditionalPanel(condition = "input['hcr2.type'] == 'FieldHockeyStickwFloor'",
                         fluidRow(column(2,numericInput("fieldwfloor.rp1.hcr2", "Spn Target",  value = 50 ,width = "100%")),
                                  column(2,numericInput("fieldwfloor.rate.hcr2", "Cap on Rate",  value = 65 ,width = "100%")),
-                                 column(2,numericInput("fieldwfloor.floor.hcr2", "Min ER",  value = 10 ,width = "100%"))
-                        )
+                                 column(2,numericInput("fieldwfloor.floor.hcr2", "Min ER",  value = 10 ,width = "100%")),
+
+                        ),
+                        radioButtons("floor.type.hcr2", "Floor Type",
+                                     c("Fixed" = "Fixed", "Declining" = "Declining"), inline=T)
+                        #selectizeInput("floor.type.hcr2", "Floor Type", choices = c("Fixed","Declining"), selected="Fixed")
        ),
 
 			selectizeInput("hcr2.line.col", "Line Color", choices = c("darkblue","red","darkgrey"),
