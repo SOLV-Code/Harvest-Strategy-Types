@@ -130,7 +130,8 @@ library("gridExtra")
 	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$display.tab ,
 	                       hcr.settings = list(fieldwfloor.rp1=input$fieldwfloor.rp1,
 	                                           fieldwfloor.rate=input$fieldwfloor.rate,
-	                                           fieldwfloor.floor = input$fieldwfloor.floor ))
+	                                           fieldwfloor.floor = input$fieldwfloor.floor,
+	                                           floor.type = input$floor.type))
 
 	  }
 
@@ -269,10 +270,10 @@ library("gridExtra")
 
 	comp.hcr1.calc <- reactive({
 
-	  run.vec <- c(input$run.med,
-	               max(c(0,input$run.med * (1 - input$run.lower/100))) ,
-	               input$run.med * (1 + input$run.upper/100),
-	               seq(0,input$plot.lim,length.out = 97)
+	  run.vec <- c(input$run.med.comp,
+	               max(c(0,input$run.med.comp * (1 - input$run.lower.comp/100))) ,
+	               input$run.med.comp * (1 + input$run.upper.comp/100),
+	               seq(0,input$plot.lim.comp,length.out = 97)
 	  )
 
 
@@ -351,7 +352,8 @@ library("gridExtra")
 	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr1.type ,
 	                       hcr.settings = list(fieldwfloor.rp1=input$fieldwfloor.rp1.hcr1,
 	                                           fieldwfloor.rate=input$fieldwfloor.rate.hcr1,
-	                                           fieldwfloor.floor = input$fieldwfloor.floor.hcr1 ))
+	                                           fieldwfloor.floor = input$fieldwfloor.floor.hcr1 ,
+	                                           floor.type = input$floor.type.hcr1))
  }
 
 
@@ -366,10 +368,10 @@ library("gridExtra")
 
 	comp.hcr2.calc <- reactive({
 
-	  run.vec <- c(input$run.med,
-	               max(c(0,input$run.med * (1 - input$run.lower/100))) ,
-	               input$run.med * (1 + input$run.upper/100),
-	               seq(0,input$plot.lim,length.out = 97)
+	  run.vec <- c(input$run.med.comp,
+	               max(c(0,input$run.med.comp * (1 - input$run.lower.comp/100))) ,
+	               input$run.med.comp * (1 + input$run.upper.comp/100),
+	               seq(0,input$plot.lim.comp,length.out = 97)
 	  )
 
 
@@ -448,12 +450,15 @@ library("gridExtra")
 	    hcr.out <- calcHCR(run.vec = run.vec, hcr.type = input$hcr2.type ,
 	                       hcr.settings = list(fieldwfloor.rp1=input$fieldwfloor.rp1.hcr2,
 	                                           fieldwfloor.rate=input$fieldwfloor.rate.hcr2,
-	                                           fieldwfloor.floor = input$fieldwfloor.floor.hcr2 ))
+	                                           fieldwfloor.floor = input$fieldwfloor.floor.hcr2,
+	                                           floor.type = input$floor.type.hcr2 ))
 	  }
 
 
 
 	  hcr.out <- hcr.out %>% select(Run,ER,Spn,Ct)
+
+	  #print(hcr.out)
 
 	  return(hcr.out)
 
@@ -464,6 +469,7 @@ library("gridExtra")
 
 	output$plotComp <- renderPlot({
 
+
 	  hcr1.in <- comp.hcr1.calc()
 	  plot.sub.1 <-  hcr1.in[1:3,] %>% as.data.frame()
 	  hcr1.in <- hcr1.in %>% arrange(Run)
@@ -471,6 +477,13 @@ library("gridExtra")
 	  hcr2.in <- comp.hcr2.calc()
 	  plot.sub.2 <-  hcr2.in[1:3,] %>% as.data.frame()
 	  hcr2.in <- hcr2.in %>% arrange(Run)
+
+
+
+	  if(input$plot.type.comp != "Table"){
+
+
+
 
 	  #print("lty")
 	  #print(input$hcr1.line.type)
@@ -574,6 +587,61 @@ library("gridExtra")
            lwd=3,bg="white",box.col="white",
            bty="o",cex = 1.5,xpd=NA)
 
+	  } # end if plot
+
+
+	  if(input$plot.type.comp == "Table"){
+
+
+	    table1.in <- plot.sub.1 %>% arrange(Run) %>%
+	      round() %>% t() %>% as.data.frame() %>%
+	      rownames_to_column("Variable") %>%
+	      mutate(HCR = input$hcr1.label) %>% select(HCR, everything())
+	    table1.in[1,1]<-""
+	    #print(table1.in)
+
+	    table2.in <- plot.sub.2 %>% arrange(Run) %>%
+	      round() %>% t() %>% as.data.frame() %>%
+	      rownames_to_column("Variable") %>%
+	      mutate(HCR = input$hcr2.label) %>% select(HCR, everything())
+	    #print(table2.in)
+
+	    print(table1.in[-1,3:5])
+	    print(table2.in[-1,3:5])
+
+	    diff.src <- as.data.frame(table2.in[-1,3:5]) - as.data.frame(table1.in[-1,3:5])
+
+	    diff.table <- diff.src %>%
+	      as.data.frame() %>% mutate(HCR = "Diff",Variable =  table1.in[-1,"Variable"])
+print(diff.table)
+
+	    table.in <- bind_rows(table1.in,table2.in[-1,],diff.table)
+	    names(table.in) <- c("HCR","Variable","Lower","Mid","Upper")
+	    #print(table.in)
+
+	    if(input$hcr1.line.col == "darkblue"){hcr1.col <- "lightblue"}
+	    if(input$hcr1.line.col != "darkblue"){hcr1.col <- input$hcr1.line.col}
+	    if(input$hcr2.line.col == "darkblue"){hcr2.col <- "lightblue"}
+	    if(input$hcr2.line.col != "darkblue"){hcr2.col <- input$hcr2.line.col}
+
+
+	    tt <-  ttheme_default(core=list(
+	      fg_params=list(fontface=c("bold.italic",rep("plain",9))),
+	      bg_params = list(fill=c("gray90", rep(hcr1.col,3),
+	                              rep(hcr2.col,3),rep("orange",3),
+	                       alpha = 0.9))  ),base_size=32)
+
+
+
+
+	    grid.table( table.in,theme = tt,rows=NULL)
+
+
+
+
+
+
+  }# end if Table
 
 	})
 
