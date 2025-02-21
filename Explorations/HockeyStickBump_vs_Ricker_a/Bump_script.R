@@ -2,6 +2,18 @@
 # SET AT Sgen, 80% Smsy, AND Umsy
 # AT DIFFERENT PRODUCTIVITY LEVELS
 
+
+# Tried {animation} package but resolution was poor and noe all the plot components showed up,
+# the gif wasn't animated - > must have hit an error
+# this example worked:
+# https://www.programmingr.com/content/animations-r/#:~:text=Fortunately%2C%20creating%20animated%20graphs%20in%20R%20is%20fairly,graph%20with%20a%20couple%20of%20bells%20and%20whistles
+
+
+# Instead: Just make a series of high-res png files, then feed them into
+# a an on-line conversion tool.
+# https://ezgif.com/maker worked well on the first try.
+
+
 # Settings
 
 install.packages <- FALSE
@@ -15,6 +27,8 @@ if(install.packages){
   install_github("SOLV-Code/RapidRicker", dependencies = TRUE,
                  build_vignettes = FALSE)
   install.packages("tidyverse")
+
+  install.packages('animation', repos = 'https://xran.yihui.org')
 
 }
 
@@ -145,9 +159,20 @@ for(i in sort(unique(hcr.out$index))){
 # ---------------------------------------------------------------------
 # Create images for multi-panel animation
 
-i <- 8
 
-layout(matrix(1:4,ncol=2),heights = c(1,2))
+for(i in 1:max(hcr.out$index)){
+
+
+png(filename = paste0("Explorations/HockeyStickBump_vs_Ricker_a/Plots/IceHockeyBump_",i,".png"),
+    width = 480*4.5, height = 480*4,
+    units = "px", pointsize = 14*3.5, bg = "white",  res = NA)
+
+
+
+
+layout(matrix(1:4,ncol=2,byrow=TRUE),heights = c(1,1))
+#par(mai=c(0.7,4,2.2,0.3))
+
 
 # Smsy and Sgen Plot
 
@@ -156,12 +181,13 @@ plot(bm.calc.out$ln.alpha,ylim = c(0,smax.use),
      pch=21,col="darkblue",bg="lightblue",bty="n",
      xlab="Productivity Parameter: ln(Ricker a)",
      ylab = "Spawner Abundance",
-     main = "A) Change in Abundance Benchmarks")
+     main = "A) Change in Abundance Benchmarks",
+     col.main = "darkblue")
 
 
 rect(bm.calc.out$ln.alpha[i]-0.04,0,
      bm.calc.out$ln.alpha[i]+0.04,smax.use,
-     col="lightgrey",border="lightgrey")
+     col="red",border="red")
 
 lines(bm.calc.out$ln.alpha,ylim = c(0,smax.use),
        bm.calc.out$Smsy,type = "o",las=1,
@@ -169,11 +195,11 @@ lines(bm.calc.out$ln.alpha,ylim = c(0,smax.use),
 
 lines(bm.calc.out$ln.alpha,
       bm.calc.out$Sgen,type = "o",las=1,
-      pch=22,col="darkblue",bg="firebrick1")
+      pch=22,col="darkblue",bg="lightgrey")
 
 
 legend("topleft",legend = c("Smsy","Sgen"),col="darkblue",lty=1,
-       pch=c(21,22),pt.bg = c("lightblue","red"),bty="o",border = "white",
+       pch=c(21,22),pt.bg = c("lightblue","lightgrey"),bty="o",border = "white",
        box.col="white")
 
 
@@ -186,11 +212,12 @@ plot(bm.calc.out$ln.alpha,bm.calc.out$Umsy*100,
      pch=21,col="darkblue",bg="darkblue",bty="n",
      xlab="Productivity Parameter: ln(Ricker a)",
      ylab = "ER (%)",
-     main = "B) Change in Removal Benchmark")
+     main = "B) Change in Removal Benchmark",
+     col.main = "darkblue")
 
 rect(bm.calc.out$ln.alpha[i]-0.04,0,
      bm.calc.out$ln.alpha[i]+0.04,smax.use,
-     col="lightgrey",border="lightgrey")
+     col="red",border="red")
 
 lines(bm.calc.out$ln.alpha, bm.calc.out$Umsy*100,type = "o",
   pch=21,col="darkblue",bg="darkblue")
@@ -200,6 +227,23 @@ legend("topleft",legend = "Umsy",col="darkblue",lty=1,
        box.col="white")
 
 
+# HCR plot: Target ER version
+
+plot(1:5,1:5,type="n",las=1,ylim=c(0,100),
+     xlim=c(0, max(run.vec)),bty="n",
+     xlab = "Run Size",ylab = "Target ER (%)",
+     main = "C) Harvest Rule - ER Target",
+     col.main = "darkblue"
+)
+
+
+for(j in sort(unique(hcr.out$index))){
+  hcr.plot <- hcr.out %>% dplyr::filter(index==j)
+  lines(hcr.plot$Run,hcr.plot$ER,lwd=4,col="darkgrey")
+}
+
+hcr.plot <- hcr.out %>% dplyr::filter(index==i)
+lines(hcr.plot$Run,hcr.plot$ER,lwd=9,col="red")
 
 
 # SPN VERSION
@@ -207,26 +251,27 @@ legend("topleft",legend = "Umsy",col="darkblue",lty=1,
 plot(1:5,1:5,type="n",las=1,ylim=c(0,max(hcr.out$Spn)),
      xlim=c(0, max(run.vec)),
      bty="n",
-     xlab = "Run Size",ylab = "Target Spn"
+     xlab = "Run Size",ylab = "Target Spn",
+     main = "D) Harvest Rule - Spawner Target",
+     col.main = "darkblue"
 )
 
 for(j in sort(unique(hcr.out$index))){
   hcr.plot <- hcr.out %>% dplyr::filter(index==j)
-  lines(hcr.plot$Run,hcr.plot$Spn,lwd=2,col="darkgrey")
+  lines(hcr.plot$Run,hcr.plot$Spn,lwd=4,col="darkgrey")
 }
 
 hcr.plot <- hcr.out %>% dplyr::filter(index==i)
-lines(hcr.plot$Run,hcr.plot$Spn,lwd=3,col="red")
+lines(hcr.plot$Run,hcr.plot$Spn,lwd=9,col="red")
 
 
+title(main = "Effect of Productivity on BM-based Hockey Stick Rule",outer=TRUE,
+      col.main="darkblue",line=-1,xpd=NA)
 
 
+dev.off()
 
-
-
-
-
-
+} # end looping through Ricker a
 
 
 
