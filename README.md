@@ -11,10 +11,18 @@ The app is available online at https://solv-code.shinyapps.io/harveststrategytyp
 This app illustrates different types of harvest strategies for Pacific salmon (Sockeye, Chinook, Coho, Chum, Pink). These species are *anadromous* (spawn in freshwater, migrate to the ocean, then return for spawning) and *semelparous* (spawn only once, then die).  Harvest targets for each year's returning run of salmon are typically set based on a spawning target or an exploitation rate target. Targets may be fixed or change with abundance.
 
 Supporting information  is being compiled in the [wiki pages](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki)
-   * [Further Reading](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Further-Reading)
-   * [Worked Example: Fraser Chum "Clockwork" Stepped Harvest Strategy](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Worked-Example:-Fraser-Chum-%22Clockwork%22-Stepped-Harvest-Strategy) 
-   * [Worked Example: Fraser Sockeye TAM Rules](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Worked-Example:-Fraser-Sockeye-TAM-Rule)
-   * [Worked Example: Skeena Sockeye Canadian Marine Commercial Fishery](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Worked-Example:-Skeena-Sockeye-Canadian-Marine-Commercial-Fishery)
+
+* [Further Reading](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Further-Reading)
+
+* [Worked Example: Fraser Chum Clockwork](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Worked-Example:-Fraser-Chum-%22Clockwork%22-Stepped-Harvest-Strategy)
+
+* [Worked Example: Fraser River Odd-year Pinks](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Worked-Example:-Fraser-River-Odd%E2%80%90year-Pink-Salmon)
+
+* [Worked Example: Fraser Sockeye TAM Rules](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Worked-Example:-Fraser-Sockeye-TAM-Rule)
+
+* [Worked Example: Skeena Cdn Mixed-stock Marine Comm Fishery](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Worked-Example:-Skeena-Sockeye-Canadian-Marine-Commercial-Fishery)
+
+* [Worked Example: Weird "Bump" in Spawner Target for Ice Hockey Stick HCR](https://github.com/SOLV-Code/Harvest-Strategy-Types/wiki/Worked-Example:-Weird-Bump-in-Ice-Hockey-Stick)
 
 ### How to use the App
 
