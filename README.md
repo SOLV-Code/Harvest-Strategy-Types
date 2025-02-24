@@ -3,7 +3,7 @@
 **Shiny App for exploring alternative harvest rule types.**
 
 
-The app is available online at https://solv-code.shinyapps.io/harveststrategytypes/
+**The app is available online at https://solv-code.shinyapps.io/harveststrategytypes/**
 
 
 ### Purpose

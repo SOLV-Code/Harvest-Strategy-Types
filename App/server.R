@@ -45,11 +45,20 @@ library("gridExtra")
 	hcr.calc <- reactive({
 
 
-	  run.vec <- c(input$run.med,
+	  if(!is.na(input$run.med)){
+  	  run.vec <- c(input$run.med,
 	                    max(c(0,input$run.med * (1 - input$run.lower/100))) ,
 	                    input$run.med * (1 + input$run.upper/100),
 	                    seq(0,input$plot.lim,length.out = 197)
 	                   )
+	  }
+
+	  if(is.na(input$run.med)){
+	    run.vec <- c(seq(0,input$plot.lim,length.out = 200)
+	    )
+	  }
+
+
 
 
 
@@ -204,13 +213,13 @@ library("gridExtra")
         #rect.col <- alpha("firebrick1", 0.2)
         #rect(plot.sub$Run[2],par("usr")[3],plot.sub$Run[3],par("usr")[4],col=rect.col ,border = rect.col )
 
+        # plot estimate range if available
+        if(!is.na(input$run.med)){
+
         # 3 lines version
         abline(v = plot.sub$Run[1],col = "red", lwd=3)
         abline(v = plot.sub$Run[2] ,col = "red", lwd=3,lty=2)
         abline(v = plot.sub$Run[3] ,col = "red", lwd=3,lty=2)
-
-
-
 
 
         if(input$plot.type == "Rate"){var.pt <- "ER"}
@@ -218,27 +227,27 @@ library("gridExtra")
         if(input$plot.type == "Catch"){var.pt <- "Ct"}
 
 
-
-
         # ref lines
         segments(par("usr")[1],plot.sub[1,var.pt],plot.sub$Run[1],plot.sub[1,var.pt],col="red",lwd=2)
         segments(par("usr")[1],plot.sub[2,var.pt],plot.sub$Run[2],plot.sub[2,var.pt],col="red",lwd=2,lty=2)
         segments(par("usr")[1],plot.sub[3,var.pt],plot.sub$Run[3],plot.sub[3,var.pt],col="red",lwd=2, lty=2)
 
-
-
-
-       if(input$plot.type == "Rate"){lines(hcr.in$Run,hcr.in$ER,type="l",bty="n",lwd = 5,col="darkblue")  }
+        if(input$plot.type == "Rate"){lines(hcr.in$Run,hcr.in$ER,type="l",bty="n",lwd = 5,col="darkblue")  }
         if(input$plot.type == "Spawners"){lines(hcr.in$Run,hcr.in$Spn,type="l",bty="n",lwd = 5,col="darkblue") }
         if(input$plot.type == "Catch"){lines(hcr.in$Run,hcr.in$Ct,type="l",bty="n",lwd = 5,col="darkblue")}
-
 
         # ref points
         points(plot.sub$Run[1],plot.sub[1,var.pt],pch=21,col="red",cex=2,lwd=3,bg="firebrick1")
         points(plot.sub$Run[2],plot.sub[2,var.pt],pch=21,col="red",cex=2,lwd=3,bg="white")
         points(plot.sub$Run[3],plot.sub[3,var.pt],pch=21,col="red",cex=2,lwd=3,bg="white")
 
+        } # end if plotting run range
+
+
         title(main = input$plot.type,col.main="darkblue",font.main=2,cex.main=2)
+
+
+
 
         } # end if plot
 
@@ -270,11 +279,18 @@ library("gridExtra")
 
 	comp.hcr1.calc <- reactive({
 
+	 if(!is.na(input$run.med.comp)){
 	  run.vec <- c(input$run.med.comp,
 	               max(c(0,input$run.med.comp * (1 - input$run.lower.comp/100))) ,
 	               input$run.med.comp * (1 + input$run.upper.comp/100),
 	               seq(0,input$plot.lim.comp,length.out = 197)
-	  )
+	                )
+	 }
+
+	  if(is.na(input$run.med.comp)){
+	    run.vec <- c(seq(0,input$plot.lim.comp,length.out = 200))
+	  }
+
 
 
 
@@ -368,11 +384,17 @@ library("gridExtra")
 
 	comp.hcr2.calc <- reactive({
 
-	  run.vec <- c(input$run.med.comp,
-	               max(c(0,input$run.med.comp * (1 - input$run.lower.comp/100))) ,
-	               input$run.med.comp * (1 + input$run.upper.comp/100),
-	               seq(0,input$plot.lim.comp,length.out = 197)
-	  )
+	  if(!is.na(input$run.med.comp)){
+	    run.vec <- c(input$run.med.comp,
+	                 max(c(0,input$run.med.comp * (1 - input$run.lower.comp/100))) ,
+	                 input$run.med.comp * (1 + input$run.upper.comp/100),
+	                 seq(0,input$plot.lim.comp,length.out = 197)
+	    )
+	  }
+
+	  if(is.na(input$run.med.comp)){
+	    run.vec <- c(seq(0,input$plot.lim.comp,length.out = 200))
+	  }
 
 
 
@@ -527,6 +549,12 @@ library("gridExtra")
     axis(1, cex.axis=1.5,col.axis = "darkblue",col= "darkblue")
     axis(2, cex.axis=1.5,col.axis = "darkblue",col= "darkblue",las=2)
 
+
+
+
+    # plot estimate range if available
+    if(!is.na(input$run.med.comp)){
+
     # 3 lines version (lines are same for both HCR, only plot 1)
     abline(v = plot.sub.1$Run[1],col = "red", lwd=3)
     abline(v = plot.sub.1$Run[2] ,col = "red", lwd=3,lty=2)
@@ -576,6 +604,10 @@ library("gridExtra")
    points(plot.sub.2$Run[1],plot.sub.2[1,var.pt],pch=21,col="red",cex=2,lwd=3,bg="firebrick1")
   points(plot.sub.2$Run[2],plot.sub.2[2,var.pt],pch=21,col="red",cex=2,lwd=3,bg="white")
   points(plot.sub.2$Run[3],plot.sub.2[3,var.pt],pch=21,col="red",cex=2,lwd=3,bg="white")
+
+
+    } # end if plotting run range
+
 
     title(main = input$plot.type.comp,col.main="darkblue",font.main=2,cex.main=2)
 
